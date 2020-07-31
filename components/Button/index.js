@@ -56,9 +56,7 @@ function Button(props) {
 					     style={iconStyles}/>
 					:
 					LeftIcon &&
-					<LeftIcon
-						className={`${styles.iconLeft} ${className.icon}`.trim()}
-						style={iconStyles}/>
+					<LeftIcon className={`${styles.iconLeft} ${className.icon}`.trim()} style={iconStyles}/>
 			}
 			{children}
 			{
@@ -68,9 +66,7 @@ function Button(props) {
 					     style={iconStyles}/>
 					:
 					RightIcon &&
-					<RightIcon
-						className={`${styles.iconRight} ${className.icon}`.trim()}
-						style={iconStyles}/>
+					<RightIcon className={`${styles.iconRight} ${className.icon}`.trim()} style={iconStyles}/>
 			}
 		</button>
 	)
