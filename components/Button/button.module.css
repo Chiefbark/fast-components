@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  outline: none;
+  font-size: 1.15rem;
+  border-style: solid;
+  padding: 16px 32px;
+}
+
+.iconLeft {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+}
+
+.iconRight {
+  width: 24px;
+  height: 24px;
+  margin-left: 16px;
+}
+
+/*# sourceMappingURL=button.module.css.map */
