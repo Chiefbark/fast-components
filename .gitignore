@@ -11,6 +11,18 @@
 # production
 /build
 
+# git export
+/public
+
+# sass
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map
+
+# idea
+/.idea
+
 # misc
 .DS_Store
 .env.local
