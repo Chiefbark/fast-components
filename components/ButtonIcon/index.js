@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styles from './buttonIcon.module.css';
 
@@ -11,18 +11,51 @@ import path from 'path';
  * @return {React.Component}
  */
 function ButtonIcon(props) {
-	const {icon: Icon, style, iconStyle, ...others} = props;
+	const {icon: Icon, className, style, hoverStyle, activeStyle, children, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, ...others} = props;
+
+	const [hovered, isHovered] = useState(false);
+	const [active, isActive] = useState(false);
+
+	let buttonStyles = {...{cursor: others.disabled ? 'default' : 'pointer'}, ...style.button};
+	let iconStyles = style.icon;
+	if (hovered) {
+		buttonStyles = {...buttonStyles, ...hoverStyle.button};
+		iconStyles = {...iconStyles, ...hoverStyle.icon};
+	}
+	if (active) {
+		buttonStyles = {...buttonStyles, ...activeStyle.button};
+		iconStyles = {...iconStyles, ...hoverStyle.icon};
+	}
 
 	return (
-		<button type={'button'} className={styles.root}
-		        style={{...{cursor: others.disabled ? 'default' : 'pointer'}, style}}
+		<button type={'button'}
+		        className={`${styles.root} ${className.button}`.trim()}
+		        style={buttonStyles}
 		        aria-disabled={others.disabled}
+		        onMouseDown={() => {
+			        isActive(true);
+			        onMouseDown && onMouseDown();
+		        }}
+		        onMouseUp={() => {
+			        isActive(false);
+			        onMouseUp && onMouseUp();
+		        }}
+		        onMouseEnter={() => {
+			        isHovered(true);
+			        onMouseEnter && onMouseEnter();
+		        }}
+		        onMouseLeave={() => {
+			        isHovered(false);
+			        onMouseLeave && onMouseLeave();
+		        }}
 		        {...others}>
 			{typeof Icon === 'string' ?
-				<img src={Icon} className={styles.icon} style={iconStyle}
-				     alt={path.basename(Icon, path.extname(Icon))}/>
+				<img src={Icon} alt={path.basename(Icon, path.extname(Icon))}
+				     className={`${styles.icon} ${className.icon}`.trim()}
+				     style={iconStyles}/>
 				:
-				<Icon className={styles.icon} style={iconStyle}/>
+				<Icon className={`${styles.icon} ${className.icon}`.trim()}
+				      style={iconStyles}/>
 			}
 		</button>
 	)
@@ -36,17 +69,29 @@ ButtonIcon.propTypes = {
 	 */
 	icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 	/**
-	 * Overrides the styles of the button
+	 * ClassNames for the button and icon
 	 *
-	 * `styles`
+	 * `{button: string, icon: string}`
 	 */
-	style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	className: PropTypes.shape({button: PropTypes.string, icon: PropTypes.string}),
 	/**
-	 * Overrides the styles of the icon
+	 * Styles for the button and icon
 	 *
-	 * `styles`
+	 * `{button: styles, icon: styles}`
 	 */
-	iconStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+	style: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object}),
+	/**
+	 * Styles for the button and icon when the component is hovered
+	 *
+	 * `{button: styles, icon: styles}`
+	 */
+	hoverStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object}),
+	/**
+	 * Styles for the button and icon when the component is pressed
+	 *
+	 * `{button: styles, icon: styles}`
+	 */
+	activeStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object})
 }
 
 export default ButtonIcon;
