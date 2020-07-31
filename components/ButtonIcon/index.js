@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styles from './buttonIcon.module.css';
-
 import path from 'path';
 
 /**
@@ -13,12 +12,12 @@ import path from 'path';
 function ButtonIcon(props) {
 	const {icon: Icon, className, style, hoverStyle, activeStyle, children, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, ...others} = props;
 
-	const [hovered, isHovered] = useState(false);
+	const [hover, isHover] = useState(false);
 	const [active, isActive] = useState(false);
 
 	let buttonStyles = {...{cursor: others.disabled ? 'default' : 'pointer'}, ...style.button};
 	let iconStyles = style.icon;
-	if (hovered) {
+	if (hover) {
 		buttonStyles = {...buttonStyles, ...hoverStyle.button};
 		iconStyles = {...iconStyles, ...hoverStyle.icon};
 	}
@@ -41,11 +40,11 @@ function ButtonIcon(props) {
 			        onMouseUp && onMouseUp();
 		        }}
 		        onMouseEnter={() => {
-			        isHovered(true);
+			        isHover(true);
 			        onMouseEnter && onMouseEnter();
 		        }}
 		        onMouseLeave={() => {
-			        isHovered(false);
+			        isHover(false);
 			        onMouseLeave && onMouseLeave();
 		        }}
 		        {...others}>
@@ -94,4 +93,11 @@ ButtonIcon.propTypes = {
 	activeStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object})
 }
 
+ButtonIcon.defaultProps = {
+	disabled: false,
+	className: {button: '', icon: ''},
+	style: {button: {}, icon: {}},
+	hoverStyle: {button: {}, icon: {}},
+	activeStyle: {button: {}, icon: {}}
+}
 export default ButtonIcon;
