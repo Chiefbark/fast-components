@@ -12,12 +12,12 @@ import path from 'path';
 function Button(props) {
 	const {leftIcon: LeftIcon, rightIcon: RightIcon, className, style, hoverStyle, activeStyle, children, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, ...others} = props;
 
-	const [hovered, isHovered] = useState(false);
+	const [hover, isHover] = useState(false);
 	const [active, isActive] = useState(false);
 
 	let buttonStyles = {...{cursor: others.disabled ? 'default' : 'pointer'}, ...style.button};
 	let iconStyles = style.icon;
-	if (hovered) {
+	if (hover) {
 		buttonStyles = {...buttonStyles, ...hoverStyle.button};
 		iconStyles = {...iconStyles, ...hoverStyle.icon};
 	}
@@ -25,7 +25,6 @@ function Button(props) {
 		buttonStyles = {...buttonStyles, ...activeStyle.button};
 		iconStyles = {...iconStyles, ...hoverStyle.icon};
 	}
-
 
 	return (
 		<button type={'button'}
@@ -41,11 +40,11 @@ function Button(props) {
 			        onMouseUp && onMouseUp();
 		        }}
 		        onMouseEnter={() => {
-			        isHovered(true);
+			        isHover(true);
 			        onMouseEnter && onMouseEnter();
 		        }}
 		        onMouseLeave={() => {
-			        isHovered(false);
+			        isHover(false);
 			        onMouseLeave && onMouseLeave();
 		        }}
 		        {...others}>
