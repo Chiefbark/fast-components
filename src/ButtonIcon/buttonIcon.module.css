@@ -10,6 +10,9 @@
   box-shadow: none;
   font-size: 1.15rem;
 }
+.root:disabled {
+  opacity: 0.75;
+}
 
 .icon {
   width: 24px;
