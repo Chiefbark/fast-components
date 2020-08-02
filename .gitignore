@@ -11,9 +11,6 @@
 # production
 /build
 
-# git export
-/public
-
 # sass
 .sass-cache/
 *.css.map
@@ -22,6 +19,7 @@
 
 # idea
 /.idea
+.idea
 
 # misc
 .DS_Store
