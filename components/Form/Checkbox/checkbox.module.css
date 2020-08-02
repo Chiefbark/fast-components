@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: 14pt;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 2px;
+  margin-right: 8px;
+  transition: background-color 0.15s ease, border 0.15s ease;
+}
+
+/*# sourceMappingURL=checkbox.module.css.map */
