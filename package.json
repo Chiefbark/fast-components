@@ -1,37 +1,27 @@
 {
-	"name": "cb-components",
+	"name": "fast-components",
+	"description": "Start your projects faster with this simple but flexible and customizable set of components for ReactJS",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Chiefbark/fast-components"
+	},
+	"homepage": "https://github.com/Chiefbark/fast-components",
+	"bugs": "https://github.com/Chiefbark/fast-components/issues",
 	"version": "0.0.1",
+	"author": {
+		"name": "Chiefbark",
+		"url": "https.//www.chiefbark.com"
+	},
+	"license": "Apache-2.0",
 	"private": false,
 	"dependencies": {
-		"@material-ui/core": "^4.11.0",
-		"@material-ui/icons": "^4.9.1",
-		"@testing-library/jest-dom": "^4.2.4",
-		"@testing-library/react": "^9.5.0",
-		"@testing-library/user-event": "^7.2.1",
-		"prop-types": "^15.7.2",
-		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
-		"react-scripts": "3.4.1"
+		"prop-types": "^15.7.2"
 	},
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+	"devDependencies": {
+		"react": "^16.13.1"
 	},
-	"eslintConfig": {
-		"extends": "react-app"
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	}
+	"keywords": [
+		"react",
+		"components"
+	]
 }
