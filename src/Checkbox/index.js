@@ -19,7 +19,6 @@ const Checkbox = React.forwardRef((props, ref) => {
 		themeToCSS(mergeThemes ? merge(theme, customTheme) : customTheme ? customTheme : theme),
 		<div className={'root'} style={{cursor: others.disabled ? 'default' : 'pointer'}}
 		     data-checked={state} data-disabled={others.disabled}
-		     ref={ref}
 		     onClick={() => {
 			     !others.disabled && setState(!state);
 			     !others.disabled && onChange && onChange(!state);
@@ -27,7 +26,7 @@ const Checkbox = React.forwardRef((props, ref) => {
 			<input type={'checkbox'} disabled={others.disabled} value={state} checked={state}
 			       onChange={event => setState(event.target.checked)}
 			       aria-checked={state} aria-disabled={others.disabled}
-			       style={{display: 'none'}}
+			       ref={ref} style={{display: 'none'}}
 			       {...others}/>
 			{Icon ?
 				<Icon className={'icon'} data-checked={state} data-disabled={others.disabled}/>
