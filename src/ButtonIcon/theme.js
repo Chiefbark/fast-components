@@ -9,12 +9,11 @@ const theme = {
 			backgroundColor: '#2196f3',
 			outline: 'none',
 			borderStyle: 'solid',
-			borderRadius: '4px',
+			borderRadius: '50%',
 			borderColor: '#2196f3',
 			color: '#fff',
 			fontSize: '1.15rem',
-			textTransform: 'uppercase',
-			padding: '16px 32px',
+			padding: '16px',
 			transition: 'background .25s'
 		},
 		':focus': {
