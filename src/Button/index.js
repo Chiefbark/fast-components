@@ -7,14 +7,13 @@ import path from 'path';
 import theme from './theme';
 import themeToCSS from '../utils/themeToCSS';
 
-function renderIcon(Icon, style) {
+function renderIcon(Icon, placement) {
 	return (
 		typeof Icon === 'string' ?
-			<img src={Icon} alt={path.basename(Icon, path.extname(Icon))}
-			     className={'icon'} style={style}/>
+			<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={`icon ${placement}`}/>
 			:
 			Icon &&
-			<Icon className={'icon'} style={style}/>
+			<Icon className={`icon ${placement}`}/>
 	)
 }
 
@@ -33,9 +32,9 @@ const Button = React.forwardRef((props, ref) => {
 		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
 		        aria-disabled={others.disabled} ref={ref}
 		        {...others}>
-			{placement === 'left' && renderIcon(Icon, {marginRight: '16px'})}
+			{placement === 'left' && renderIcon(Icon, placement)}
 			<span>{children}</span>
-			{placement === 'right' && renderIcon(Icon, {marginLeft: '16px'})}
+			{placement === 'right' && renderIcon(Icon, placement)}
 		</button>
 	)
 });
