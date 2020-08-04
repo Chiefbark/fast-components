@@ -1,3 +1,4 @@
+// Default theme for Button Component
 const theme = {
 	root: {
 		default: {
@@ -5,26 +6,36 @@ const theme = {
 			flexDirection: 'row',
 			alignItems: 'center',
 			justifyContent: 'center',
-			borderRadius: '4px',
+			backgroundColor: '#2196f3',
 			outline: 'none',
-			fontSize: '1.15rem',
 			borderStyle: 'solid',
-			padding: '16px 32px'
+			borderRadius: '4px',
+			borderColor: '#2196f3',
+			color: '#fff',
+			fontSize: '1.15rem',
+			textTransform: 'uppercase',
+			padding: '16px 32px',
+			transition: 'background .25s'
 		},
-		focus: {},
-		hover: {},
-		active: {},
-		disabled: {}
+		':focus': {
+			backgroundColor: '#1b7dcb'
+		},
+		':hover': {
+			backgroundColor: '#1b7dcb'
+		},
+		':active': {
+			backgroundColor: '#259fff'
+		},
+		'[disabled]': {
+			backgroundColor: '#ffffff1f',
+			color: '#ffffff4d'
+		}
 	},
 	icon: {
 		default: {
 			width: '24px',
 			height: '24px'
-		},
-		focus: undefined,
-		hover: undefined,
-		active: undefined,
-		disabled: undefined
+		}
 	}
 }
 
