@@ -12,8 +12,7 @@ function renderIcon(Icon, placement) {
 		typeof Icon === 'string' ?
 			<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={`icon ${placement}`}/>
 			:
-			Icon &&
-			<Icon className={`icon ${placement}`}/>
+			Icon && <Icon className={`icon ${placement}`}/>
 	)
 }
 
