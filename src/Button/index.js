@@ -1,120 +1,95 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './button.module.css';
+import Style from 'style-it';
+import merge from 'deepmerge';
 import path from 'path';
+
+import theme from './theme';
+import themeToCSS from '../utils/themeToCSS';
+
+function renderIcon(Icon, style) {
+	return (
+		typeof Icon === 'string' ?
+			<img src={Icon} alt={path.basename(Icon, path.extname(Icon))}
+			     className={'icon'} style={style}/>
+			:
+			Icon &&
+			<Icon className={'icon'} style={style}/>
+	)
+}
 
 /**
  * @author {@link https://github.com/Chiefbark Chiefbark}
  * @param props properties of the component
- * @see Button.propTypes
  * @return {React.Component}
  */
 function Button(props) {
-	const {leftIcon: LeftIcon, rightIcon: RightIcon, className, style, hoverStyle, activeStyle, children, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, ...others} = props;
+	const {icon: Icon, placement, theme: customTheme, mergeThemes, children, ...others} = props;
 
-	const [hover, isHover] = useState(false);
-	const [active, isActive] = useState(false);
-
-	let buttonStyles = {...{cursor: others.disabled ? 'default' : 'pointer'}, ...style.button};
-	let iconStyles = style.icon;
-	if (hover) {
-		buttonStyles = {...buttonStyles, ...hoverStyle.button};
-		iconStyles = {...iconStyles, ...hoverStyle.icon};
-	}
-	if (active) {
-		buttonStyles = {...buttonStyles, ...activeStyle.button};
-		iconStyles = {...iconStyles, ...hoverStyle.icon};
-	}
-
-	return (
+	return Style.it(
+		themeToCSS(mergeThemes ? merge(theme, customTheme) : customTheme),
 		<button type={'button'}
-		        className={`${styles.root} ${className.button}`.trim()}
-		        style={buttonStyles}
+		        className={'root'}
+		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
 		        aria-disabled={others.disabled}
-		        onMouseDown={() => {
-			        isActive(true);
-			        onMouseDown && onMouseDown();
-		        }}
-		        onMouseUp={() => {
-			        isActive(false);
-			        onMouseUp && onMouseUp();
-		        }}
-		        onMouseEnter={() => {
-			        isHover(true);
-			        onMouseEnter && onMouseEnter();
-		        }}
-		        onMouseLeave={() => {
-			        isHover(false);
-			        onMouseLeave && onMouseLeave();
-		        }}
 		        {...others}>
-			{
-				typeof LeftIcon === 'string' ?
-					<img src={LeftIcon} alt={path.basename(LeftIcon, path.extname(LeftIcon))}
-					     className={`${styles.iconLeft} ${className.icon}`.trim()}
-					     style={iconStyles}/>
-					:
-					LeftIcon &&
-					<LeftIcon className={`${styles.iconLeft} ${className.icon}`.trim()} style={iconStyles}/>
-			}
+			{placement === 'left' && renderIcon(Icon, {marginRight: '16px'})}
 			{children}
-			{
-				typeof RightIcon === 'string' ?
-					<img src={RightIcon} alt={path.basename(RightIcon, path.extname(RightIcon))}
-					     className={`${styles.iconRight} ${className.icon}`.trim()}
-					     style={iconStyles}/>
-					:
-					RightIcon &&
-					<RightIcon className={`${styles.iconRight} ${className.icon}`.trim()} style={iconStyles}/>
-			}
+			{placement === 'right' && renderIcon(Icon, {marginLeft: '16px'})}
 		</button>
 	)
 }
 
 Button.propTypes = {
 	/**
-	 * Displays an icon before the text. Can be either a component or a path/url to the image
+	 * Displays an icon in the button. Can be either a component or a path/url to the image
 	 *
 	 * `React Element | string`
 	 */
-	leftIcon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+	icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 	/**
-	 * Displays an icon after the text. Can be either a component or a path/url to the image
+	 * Position of the icon if defined
 	 *
-	 * `React Element | string`
+	 * `string` - default `right`
 	 */
-	rightIcon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+	placement: PropTypes.oneOf(['left', 'right']),
 	/**
-	 * ClassNames for the button and icon
+	 * Theme of the component
 	 *
-	 * `{button: string, icon: string}`
+	 * `object`
+	 *
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/theme.js Button - default theme}
 	 */
-	className: PropTypes.shape({button: PropTypes.string, icon: PropTypes.string}),
+	theme: PropTypes.shape({
+		root: PropTypes.shape({
+			default: PropTypes.object,
+			focus: PropTypes.object,
+			hover: PropTypes.object,
+			active: PropTypes.object,
+			disabled: PropTypes.object
+		}),
+		icon: PropTypes.shape({
+			default: PropTypes.object,
+			focus: PropTypes.object,
+			hover: PropTypes.object,
+			active: PropTypes.object,
+			disabled: PropTypes.object
+		})
+	}),
 	/**
-	 * Styles for the button and icon
+	 * If `true`, the theme of the component will inherit and/or override all the properties from the default theme
 	 *
-	 * `{button: styles, icon: styles}`
-	 */
-	style: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object}),
-	/**
-	 * Styles for the button and icon when the component is hovered
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/theme.js Button - default theme}
 	 *
-	 * `{button: styles, icon: styles}`
+	 * `boolean` - default `true`
 	 */
-	hoverStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object}),
-	/**
-	 * Styles for the button and icon when the component is pressed
-	 *
-	 * `{button: styles, icon: styles}`
-	 */
-	activeStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object})
+	mergeThemes: PropTypes.bool
 }
 
 Button.defaultProps = {
 	disabled: false,
-	className: {button: '', icon: ''},
-	style: {button: {}, icon: {}},
-	hoverStyle: {button: {}, icon: {}},
-	activeStyle: {button: {}, icon: {}}
+	placement: 'right',
+	mergeThemes: true
 }
+
 export default Button;
