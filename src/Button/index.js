@@ -23,7 +23,7 @@ function renderIcon(Icon, style) {
  * @param props properties of the component
  * @return {React.Component}
  */
-function Button(props) {
+const Button = React.forwardRef((props, ref) => {
 	const {icon: Icon, placement, theme: customTheme, mergeThemes, children, ...others} = props;
 
 	return Style.it(
@@ -31,14 +31,14 @@ function Button(props) {
 		<button type={'button'}
 		        className={'root'}
 		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
-		        aria-disabled={others.disabled}
+		        aria-disabled={others.disabled} ref={ref}
 		        {...others}>
 			{placement === 'left' && renderIcon(Icon, {marginRight: '16px'})}
 			<span>{children}</span>
 			{placement === 'right' && renderIcon(Icon, {marginLeft: '16px'})}
 		</button>
 	)
-}
+});
 
 Button.propTypes = {
 	/**

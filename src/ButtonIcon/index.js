@@ -12,7 +12,7 @@ import themeToCSS from '../utils/themeToCSS';
  * @param props properties of the component
  * @return {React.Component}
  */
-function ButtonIcon(props) {
+const ButtonIcon = React.forwardRef((props, ref) => {
 	const {icon: Icon, theme: customTheme, mergeThemes, children, ...others} = props;
 
 	return Style.it(
@@ -20,7 +20,7 @@ function ButtonIcon(props) {
 		<button type={'button'}
 		        className={'root'}
 		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
-		        aria-disabled={others.disabled}
+		        aria-disabled={others.disabled} ref={ref}
 		        {...others}>
 			{typeof Icon === 'string' ?
 				<img src={Icon} alt={path.basename(Icon, path.extname(Icon))}
@@ -31,7 +31,7 @@ function ButtonIcon(props) {
 			}
 		</button>
 	)
-}
+});
 
 ButtonIcon.propTypes = {
 	/**
