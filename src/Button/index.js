@@ -34,7 +34,7 @@ function Button(props) {
 		        aria-disabled={others.disabled}
 		        {...others}>
 			{placement === 'left' && renderIcon(Icon, {marginRight: '16px'})}
-			{children}
+			<span>{children}</span>
 			{placement === 'right' && renderIcon(Icon, {marginLeft: '16px'})}
 		</button>
 	)
