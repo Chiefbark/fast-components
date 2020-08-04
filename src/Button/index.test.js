@@ -4,49 +4,49 @@ import merge from 'deepmerge';
 import theme from './theme';
 import themeToCSS from '../utils/themeToCSS';
 
-import {shallow, configure} from 'enzyme';
+import {mount, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-
 
 configure({adapter: new Adapter()});
 
-test('Button - default theme', () => {
-	const button = shallow(<Button>button</Button>);
+test('Button - render', () => {
+	// Default render
+	const wrapper1 = mount(<Button>button</Button>);
+	expect(wrapper1.find('button').hasClass('root')).toEqual(true);
+	expect(wrapper1.find('img')).toHaveLength(0);
+	expect(wrapper1.find('svg')).toHaveLength(0);
 
-	// Button Component with default theme
-	expect(button.childAt(0).text()).toMatch(themeToCSS(theme));
+	// Left icon render
+	const wrapper2 = mount(<Button icon={'https://image.flaticon.com/icons/svg/2089/2089610.svg'}
+	                               placement={'left'}>button</Button>);
+	expect(wrapper2.find('img')).toHaveLength(1);
+	expect(wrapper2.find('img + span')).toHaveLength(1);
+
+	// Right icon render
+	const wrapper3 = mount(<Button icon={'https://image.flaticon.com/icons/svg/2089/2089610.svg'}>button</Button>);
+	expect(wrapper3.find('img')).toHaveLength(1);
+	expect(wrapper3.find('span + img')).toHaveLength(1);
 });
 
-test('Button - custom theme', () => {
+test('Button - theme', () => {
 	const customTheme = {
 		root: {
 			default: {backgroundColor: 'red', borderColor: 'red'},
-			':hover': {
-				backgroundColor: 'indianred'
-			}
+			':hover': {backgroundColor: 'indianred'}
 		}
 	}
-	const buttonMerge = shallow(<Button theme={customTheme}>button</Button>);
-	const buttonOverride = shallow(<Button theme={customTheme} mergeThemes={false}>button</Button>);
+	// Default theme
+	const wrapper1 = mount(<Button>button</Button>);
+	expect(wrapper1.prop('theme')).toEqual({});
+	expect(wrapper1.find('Style').prop('children')[0]).toEqual(themeToCSS(theme));
 
-	// Button Component merging themes
-	expect(buttonMerge.childAt(0).text()).not.toMatch(themeToCSS(customTheme));
-	expect(buttonMerge.childAt(0).text()).toMatch(themeToCSS(merge(theme, customTheme)));
+	// Custom theme
+	const wrapper2 = mount(<Button theme={customTheme}>button</Button>);
+	expect(wrapper2.prop('theme')).toEqual(customTheme);
+	expect(wrapper2.find('Style').prop('children')[0]).toEqual(themeToCSS(merge(theme, customTheme)));
 
-	// Button Component overriding themes
-	expect(buttonOverride.childAt(0).text()).not.toMatch(themeToCSS(merge(theme, customTheme)));
-	expect(buttonOverride.childAt(0).text()).toMatch(themeToCSS(customTheme));
-});
-
-test('Button - with icons', () => {
-	const buttonLeftIcon = shallow(<Button icon={'https://image.flaticon.com/icons/svg/2089/2089610.svg'}
-	                                       placement={'left'}>button</Button>);
-	const buttonRightIcon = shallow(<Button icon={'https://image.flaticon.com/icons/svg/2089/2089610.svg'}
-	                                        placement={'right'}>button</Button>);
-
-	// Button Component with left icon
-	expect(buttonLeftIcon.html()).toMatch(/<img .*\/>button/);
-
-	// Button Component with right icon
-	expect(buttonRightIcon.html()).toMatch(/button<img .*\/>/);
+	// Custom theme override
+	const wrapper3 = mount(<Button theme={customTheme} mergeThemes={false}>button</Button>);
+	expect(wrapper3.prop('theme')).toEqual(customTheme);
+	expect(wrapper3.find('Style').prop('children')[0]).toEqual(themeToCSS(customTheme));
 });
