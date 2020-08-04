@@ -61,20 +61,8 @@ Button.propTypes = {
 	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/theme.js Button - default theme}
 	 */
 	theme: PropTypes.shape({
-		root: PropTypes.shape({
-			default: PropTypes.object,
-			focus: PropTypes.object,
-			hover: PropTypes.object,
-			active: PropTypes.object,
-			disabled: PropTypes.object
-		}),
-		icon: PropTypes.shape({
-			default: PropTypes.object,
-			focus: PropTypes.object,
-			hover: PropTypes.object,
-			active: PropTypes.object,
-			disabled: PropTypes.object
-		})
+		root: PropTypes.shape({default: PropTypes.object}),
+		icon: PropTypes.shape({default: PropTypes.object})
 	}),
 	/**
 	 * If `true`, the theme of the component will inherit and/or override all the properties from the default theme
