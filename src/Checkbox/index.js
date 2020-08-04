@@ -5,6 +5,7 @@ import merge from 'deepmerge';
 
 import theme from './theme';
 import themeToCSS from '../utils/themeToCSS';
+import path from 'path';
 
 /**
  * @author {@link https://github.com/Chiefbark Chiefbark}
@@ -29,7 +30,11 @@ const Checkbox = React.forwardRef((props, ref) => {
 			       ref={ref} style={{display: 'none'}}
 			       {...others}/>
 			{Icon ?
-				<Icon className={'icon'} data-checked={state} data-disabled={others.disabled}/>
+				typeof Icon === 'string' ?
+					<img src={Icon} alt={path.basename(Icon, path.extname(Icon))}
+					     className={'icon'}/>
+					:
+					<Icon className={'icon'} data-checked={state} data-disabled={others.disabled}/>
 				:
 				<svg className={'icon'} xmlns="http://www.w3.org/2000/svg" viewBox={'0 0 24 24'}
 				     data-checked={state} data-disabled={others.disabled}>
