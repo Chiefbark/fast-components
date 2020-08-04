@@ -89,6 +89,7 @@ Button.propTypes = {
 Button.defaultProps = {
 	disabled: false,
 	placement: 'right',
+	theme: {},
 	mergeThemes: true
 }
 
