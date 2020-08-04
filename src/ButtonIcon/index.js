@@ -1,60 +1,33 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './buttonIcon.module.css';
+import Style from 'style-it';
+import merge from 'deepmerge';
 import path from 'path';
+
+import theme from './theme';
+import themeToCSS from '../utils/themeToCSS';
 
 /**
  * @author {@link https://github.com/Chiefbark Chiefbark}
  * @param props properties of the component
- * @see ButtonIcon.propTypes
  * @return {React.Component}
  */
 function ButtonIcon(props) {
-	const {icon: Icon, className, style, hoverStyle, activeStyle, children, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, ...others} = props;
+	const {icon: Icon, theme: customTheme, mergeThemes, children, ...others} = props;
 
-	const [hover, isHover] = useState(false);
-	const [active, isActive] = useState(false);
-
-	let buttonStyles = {...{cursor: others.disabled ? 'default' : 'pointer'}, ...style.button};
-	let iconStyles = style.icon;
-	if (hover) {
-		buttonStyles = {...buttonStyles, ...hoverStyle.button};
-		iconStyles = {...iconStyles, ...hoverStyle.icon};
-	}
-	if (active) {
-		buttonStyles = {...buttonStyles, ...activeStyle.button};
-		iconStyles = {...iconStyles, ...hoverStyle.icon};
-	}
-
-	return (
+	return Style.it(
+		themeToCSS(mergeThemes ? merge(theme, customTheme) : customTheme),
 		<button type={'button'}
-		        className={`${styles.root} ${className.button}`.trim()}
-		        style={buttonStyles}
+		        className={'root'}
+		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
 		        aria-disabled={others.disabled}
-		        onMouseDown={() => {
-			        isActive(true);
-			        onMouseDown && onMouseDown();
-		        }}
-		        onMouseUp={() => {
-			        isActive(false);
-			        onMouseUp && onMouseUp();
-		        }}
-		        onMouseEnter={() => {
-			        isHover(true);
-			        onMouseEnter && onMouseEnter();
-		        }}
-		        onMouseLeave={() => {
-			        isHover(false);
-			        onMouseLeave && onMouseLeave();
-		        }}
 		        {...others}>
 			{typeof Icon === 'string' ?
 				<img src={Icon} alt={path.basename(Icon, path.extname(Icon))}
-				     className={`${styles.icon} ${className.icon}`.trim()}
-				     style={iconStyles}/>
+				     className={'icon'}/>
 				:
-				<Icon className={`${styles.icon} ${className.icon}`.trim()}
-				      style={iconStyles}/>
+				Icon &&
+				<Icon className={'icon'}/>
 			}
 		</button>
 	)
@@ -62,42 +35,36 @@ function ButtonIcon(props) {
 
 ButtonIcon.propTypes = {
 	/**
-	 * The icon to display. Can be either a component or a path/url to the image
+	 * Displays an icon in the button. Can be either a component or a path/url to the image
 	 *
-	 * `React Element | image path`
+	 * `React Element | string`
 	 */
 	icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 	/**
-	 * ClassNames for the button and icon
+	 * Theme of the component
 	 *
-	 * `{button: string, icon: string}`
+	 * `object`
+	 *
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/ButtonIcon/theme.js Button - default theme}
 	 */
-	className: PropTypes.shape({button: PropTypes.string, icon: PropTypes.string}),
+	theme: PropTypes.shape({
+		root: PropTypes.shape({default: PropTypes.object}),
+		icon: PropTypes.shape({default: PropTypes.object})
+	}),
 	/**
-	 * Styles for the button and icon
+	 * If `true`, the theme of the component will inherit and/or override all the properties from the default theme
 	 *
-	 * `{button: styles, icon: styles}`
-	 */
-	style: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object}),
-	/**
-	 * Styles for the button and icon when the component is hovered
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/theme.js Button - default theme}
 	 *
-	 * `{button: styles, icon: styles}`
+	 * `boolean` - default `true`
 	 */
-	hoverStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object}),
-	/**
-	 * Styles for the button and icon when the component is pressed
-	 *
-	 * `{button: styles, icon: styles}`
-	 */
-	activeStyle: PropTypes.shape({button: PropTypes.object, icon: PropTypes.object})
+	mergeThemes: PropTypes.bool
 }
 
 ButtonIcon.defaultProps = {
 	disabled: false,
-	className: {button: '', icon: ''},
-	style: {button: {}, icon: {}},
-	hoverStyle: {button: {}, icon: {}},
-	activeStyle: {button: {}, icon: {}}
+	theme: {},
+	mergeThemes: true
 }
+
 export default ButtonIcon;
