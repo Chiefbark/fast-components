@@ -35,6 +35,12 @@ const theme = {
 		default: {
 			width: '24px',
 			height: '24px'
+		},
+		'.left': {
+			marginRight: '16px'
+		},
+		'.right': {
+			marginLeft: '16px'
 		}
 	}
 }
