@@ -12,7 +12,7 @@ const theme = {
 			color: '#fff',
 			fontSize: '14pt'
 		},
-		'[aria-disabled=true]': {
+		'[data-disabled=true]': {
 			color: '#ffffff4d'
 		}
 	},
@@ -31,7 +31,7 @@ const theme = {
 		'[data-checked=true] path': {
 			fill: '#fff'
 		},
-		'[aria-disabled=true]': {
+		'[data-disabled=true]': {
 			borderColor: '#ffffff1f'
 		}
 	},
