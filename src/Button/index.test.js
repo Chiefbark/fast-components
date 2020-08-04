@@ -21,11 +21,13 @@ test('Button - render', () => {
 	                               placement={'left'}>button</Button>);
 	expect(wrapper2.find('img')).toHaveLength(1);
 	expect(wrapper2.find('img + span')).toHaveLength(1);
+	expect(wrapper2.find('img').prop('alt')).toEqual('2089610');
 
 	// Right icon render
 	const wrapper3 = mount(<Button icon={'https://image.flaticon.com/icons/svg/2089/2089610.svg'}>button</Button>);
 	expect(wrapper3.find('img')).toHaveLength(1);
 	expect(wrapper3.find('span + img')).toHaveLength(1);
+	expect(wrapper3.find('img').prop('alt')).toEqual('2089610');
 });
 
 test('Button - theme', () => {
