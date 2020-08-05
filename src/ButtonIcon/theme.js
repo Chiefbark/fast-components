@@ -9,7 +9,6 @@ export const theme = {
 			backgroundColor: '#2196f3',
 			outline: 'none',
 			borderStyle: 'solid',
-			borderRadius: '50%',
 			borderColor: '#2196f3',
 			color: '#fff',
 			fontSize: '1.15rem',
