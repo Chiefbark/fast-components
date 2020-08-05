@@ -84,9 +84,9 @@ Checkbox.propTypes = {
 	/**
 	 * If `true`, the theme of the component will inherit and/or override all the properties from the default theme
 	 *
-	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Checkbox/theme.js Checkbox - default theme}
-	 *
 	 * `boolean` - default `true`
+	 *
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Checkbox/theme.js Checkbox - default theme}
 	 */
 	mergeThemes: PropTypes.bool
 }
