@@ -39,5 +39,9 @@ export const theme = {
 }
 
 export function themeValidator(theme) {
-	return {...theme.root, ...theme.icon, ...theme.label};
+	const validatedTheme = {};
+	if (theme.root) validatedTheme.root = theme.root;
+	if (theme.icon) validatedTheme.icon = theme.icon;
+	if (theme.label) validatedTheme.label = theme.label;
+	return validatedTheme;
 }
