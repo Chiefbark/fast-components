@@ -1,8 +1,5 @@
 import React from 'react';
 import Checkbox from './index';
-import merge from 'deepmerge';
-import theme from './theme';
-import themeToCSS from '../utils/themeToCSS';
 
 import {mount, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
@@ -33,27 +30,8 @@ test('Checkbox - render', () => {
 	const wrapper3 = mount(<Checkbox disabled>checkbox</Checkbox>);
 	expect(wrapper3.find('div').prop('data-disabled')).toBe(true);
 	expect(wrapper3.find('input').prop('aria-disabled')).toBe(true);
-});
 
-test('Checkbox - theme', () => {
-	const customTheme = {
-		root: {
-			default: {backgroundColor: 'red', borderColor: 'red'},
-			':hover': {backgroundColor: 'indianred'}
-		}
-	}
-	// Default theme
-	const wrapper1 = mount(<Checkbox>checkbox</Checkbox>);
-	expect(wrapper1.prop('theme')).toEqual({});
-	expect(wrapper1.find('Style').prop('children')[0]).toEqual(themeToCSS(theme));
-
-	// Custom theme
-	const wrapper2 = mount(<Checkbox theme={customTheme}>checkbox</Checkbox>);
-	expect(wrapper2.prop('theme')).toEqual(customTheme);
-	expect(wrapper2.find('Style').prop('children')[0]).toEqual(themeToCSS(merge(theme, customTheme)));
-
-	// Custom theme override
-	const wrapper3 = mount(<Checkbox theme={customTheme} mergeThemes={false}>checkbox</Checkbox>);
-	expect(wrapper3.prop('theme')).toEqual(customTheme);
-	expect(wrapper3.find('Style').prop('children')[0]).toEqual(themeToCSS(customTheme));
+	// Disabled render
+	const wrapper4 = mount(<Checkbox disabled={true}>button</Checkbox>);
+	expect(wrapper4.find('input').prop('disabled')).toBe(true);
 });
