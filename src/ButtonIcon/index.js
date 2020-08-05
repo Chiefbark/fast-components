@@ -13,13 +13,13 @@ import themeToCSS from '../utils/themeToCSS';
  * @return {React.Component}
  */
 const ButtonIcon = React.forwardRef((props, ref) => {
-	const {icon: Icon, theme: customTheme, mergeThemes, children, ...others} = props;
+	const {icon: Icon, rounded, theme: customTheme, mergeThemes, children, ...others} = props;
 
 	return Style.it(
 		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
 		<button type={'button'}
 		        className={'root'}
-		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
+		        style={{cursor: others.disabled ? 'default' : 'pointer', borderRadius: rounded ? '50%' : undefined}}
 		        aria-disabled={others.disabled} ref={ref}
 		        {...others}>
 			{typeof Icon === 'string' ?
@@ -40,6 +40,12 @@ ButtonIcon.propTypes = {
 	 * `React Element | string`
 	 */
 	icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+	/**
+	 * Specifies if the button is rounded or not
+	 *
+	 * `boolean` - default `true`
+	 */
+	rounded: PropTypes.bool,
 	/**
 	 * Theme of the component
 	 *
@@ -63,6 +69,7 @@ ButtonIcon.propTypes = {
 
 ButtonIcon.defaultProps = {
 	disabled: false,
+	rounded: true,
 	theme: {},
 	mergeThemes: true
 }
