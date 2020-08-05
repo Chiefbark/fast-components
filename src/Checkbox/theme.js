@@ -1,5 +1,5 @@
 // Default theme for Checkbox Component
-const theme = {
+export const theme = {
 	root: {
 		default: {
 			display: 'flex',
@@ -38,4 +38,6 @@ const theme = {
 	label: {}
 }
 
-export default theme;
+export function themeValidator(theme) {
+	return {...theme.root, ...theme.icon, ...theme.label};
+}

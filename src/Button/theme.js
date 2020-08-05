@@ -1,5 +1,5 @@
 // Default theme for Button Component
-const theme = {
+export const theme = {
 	root: {
 		default: {
 			display: 'flex',
@@ -45,4 +45,6 @@ const theme = {
 	}
 }
 
-export default theme;
+export function themeValidator(theme) {
+	return {...theme.root, ...theme.icon};
+}

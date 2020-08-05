@@ -4,7 +4,7 @@ import Style from 'style-it';
 import merge from 'deepmerge';
 import path from 'path';
 
-import theme from './theme';
+import {theme, themeValidator} from './theme';
 import themeToCSS from '../utils/themeToCSS';
 
 function renderIcon(Icon, placement) {
@@ -25,7 +25,7 @@ const Button = React.forwardRef((props, ref) => {
 	const {icon: Icon, placement, theme: customTheme, mergeThemes, children, ...others} = props;
 
 	return Style.it(
-		themeToCSS(mergeThemes ? merge(theme, customTheme) : customTheme),
+		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
 		<button type={'button'}
 		        className={'root'}
 		        style={{cursor: others.disabled ? 'default' : 'pointer'}}

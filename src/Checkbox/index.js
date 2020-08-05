@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Style from 'style-it';
 import merge from 'deepmerge';
 
-import theme from './theme';
+import {theme, themeValidator} from './theme';
 import themeToCSS from '../utils/themeToCSS';
 import path from 'path';
 
@@ -17,7 +17,7 @@ const Checkbox = React.forwardRef((props, ref) => {
 	const [state, setState] = useState(initialState);
 
 	return Style.it(
-		themeToCSS(mergeThemes ? merge(theme, customTheme) : customTheme ? customTheme : theme),
+		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
 		<div className={'root'} style={{cursor: others.disabled ? 'default' : 'pointer'}}
 		     data-checked={state} data-disabled={others.disabled}
 		     onClick={() => {
