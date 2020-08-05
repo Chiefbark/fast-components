@@ -28,7 +28,8 @@ export const theme = {
 		},
 		'[disabled]': {
 			backgroundColor: '#ffffff1f',
-			color: '#ffffff4d'
+			color: '#ffffff4d',
+			borderColor: '#ffffff1f'
 		}
 	},
 	icon: {

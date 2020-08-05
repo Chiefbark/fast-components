@@ -32,6 +32,7 @@ export const theme = {
 			fill: '#fff'
 		},
 		'[data-disabled=true]': {
+			backgroundColor: '#ffffff4d',
 			borderColor: '#ffffff1f'
 		}
 	},
