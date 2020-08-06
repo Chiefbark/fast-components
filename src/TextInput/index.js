@@ -7,8 +7,8 @@ import {theme, themeValidator} from './theme';
 import themeToCSS from '../utils/themeToCSS';
 
 const TextInput = React.forwardRef((props, ref) => {
-	const {label, helperText, error, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
-	const [state, setState] = useState('');
+	const {initialValue, label, helperText, error, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
+	const [state, setState] = useState(initialValue);
 
 	return Style.it(
 		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
@@ -29,6 +29,12 @@ const TextInput = React.forwardRef((props, ref) => {
 });
 
 TextInput.propTypes = {
+	/**
+	 * Sets the initial value of the input
+	 *
+	 * `string`
+	 */
+	initialValue: PropTypes.string,
 	/**
 	 * Label of the input
 	 *
@@ -70,6 +76,7 @@ TextInput.propTypes = {
 }
 
 TextInput.defaultProps = {
+	initialValue: '',
 	disabled: false,
 	theme: {},
 	mergeThemes: true
