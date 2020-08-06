@@ -7,14 +7,15 @@ import {theme, themeValidator} from './theme';
 import themeToCSS from '../utils/themeToCSS';
 
 const TextInput = React.forwardRef((props, ref) => {
-	const {initialValue, label, helperText, error, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
+	const {initialValue, type, label, helperText, error, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
 	const [state, setState] = useState(initialValue);
 
 	return Style.it(
 		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
 		<div className={'root'} data-disabled={others.disabled}>
 			<div className={'root'} style={{borderRadius: 0, flexDirection: 'column'}}>
-				<input type={'text'} className={'input'} id={others.id} disabled={others.disabled} value={state}
+				<input type={['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text'}
+				       className={'input'} id={others.id} disabled={others.disabled} value={state}
 				       aria-disabled={others.disabled} ref={ref} data-error={error}
 				       onChange={event => {
 					       setState(event.currentTarget.value);
@@ -35,6 +36,12 @@ TextInput.propTypes = {
 	 * `string`
 	 */
 	initialValue: PropTypes.string,
+	/**
+	 * Type of the input. Can be one of `email, number, password, tel, text`
+	 *
+	 * `string` - default `text`
+	 */
+	type: PropTypes.oneOf(['email', 'number', 'password', 'tel', 'text']),
 	/**
 	 * Label of the input
 	 *
@@ -77,6 +84,7 @@ TextInput.propTypes = {
 
 TextInput.defaultProps = {
 	initialValue: '',
+	type: 'text',
 	disabled: false,
 	theme: {},
 	mergeThemes: true
