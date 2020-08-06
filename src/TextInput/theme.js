@@ -45,9 +45,9 @@ export const theme = {
 	},
 	helperText: {
 		default: {
-			fontSize: '10pt',
 			alignSelf: 'flex-start',
 			color: '#ffffffa1',
+			fontSize: '10pt',
 			padding: '4px 0 0 8px'
 		},
 		'.error': {
@@ -57,11 +57,12 @@ export const theme = {
 	label: {
 		default: {
 			position: 'absolute',
+			transform: 'translate(0, -50%)',
 			top: '50%',
 			left: '16px',
-			transform: 'translate(0, -50%)',
 			color: '#00000088',
 			fontSize: '12pt',
+			pointerEvents: 'none',
 			transition: 'top .25s, font-size .25s'
 		},
 		'.error': {
