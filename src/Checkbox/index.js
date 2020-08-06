@@ -26,8 +26,7 @@ const Checkbox = React.forwardRef((props, ref) => {
 		     }}>
 			<input type={'checkbox'} disabled={others.disabled} value={state} checked={state}
 			       onChange={event => setState(event.target.checked)}
-			       aria-checked={state} aria-disabled={others.disabled}
-			       ref={ref} style={{display: 'none'}}
+			       aria-checked={state} aria-disabled={others.disabled} ref={ref} style={{display: 'none'}}
 			       {...others}/>
 			{Icon ?
 				typeof Icon === 'string' ?
