@@ -17,7 +17,7 @@ test('Checkbox - render', () => {
 	expect(wrapper1.find('div').prop('data-checked')).toBe(true);
 
 	// Icon render
-	const wrapper2 = mount(<Checkbox initialState={true}
+	const wrapper2 = mount(<Checkbox initialValue={true}
 		icon={'https://image.flaticon.com/icons/svg/2089/2089610.svg'}>checkbox</Checkbox>);
 	expect(wrapper2.find('img')).toHaveLength(1);
 	expect(wrapper2.find('svg')).toHaveLength(0);
