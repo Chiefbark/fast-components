@@ -13,7 +13,7 @@ import path from 'path';
  * @return {React.Component}
  */
 const Checkbox = React.forwardRef((props, ref) => {
-	const {icon: Icon, initialValue, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
+	const {initialValue, onChange, icon: Icon, theme: customTheme, mergeThemes, children, ...others} = props;
 	const [state, setState] = useState(initialValue);
 
 	return Style.it(
