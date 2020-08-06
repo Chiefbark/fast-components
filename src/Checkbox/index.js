@@ -13,8 +13,8 @@ import path from 'path';
  * @return {React.Component}
  */
 const Checkbox = React.forwardRef((props, ref) => {
-	const {icon: Icon, initialState, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
-	const [state, setState] = useState(initialState);
+	const {icon: Icon, initialValue, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
+	const [state, setState] = useState(initialValue);
 
 	return Style.it(
 		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
@@ -51,23 +51,23 @@ const Checkbox = React.forwardRef((props, ref) => {
 
 Checkbox.propTypes = {
 	/**
-	 * Overrides the icon of the checkbox. Can be either a component or a path/url to the image
-	 *
-	 * `React Element | string`
-	 */
-	icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-	/**
-	 * Defines if the component is checked or not
+	 * Sets the initial state of the checkbox
 	 *
 	 * `boolean` - default `false`
 	 */
-	initialState: PropTypes.bool,
+	initialValue: PropTypes.bool,
 	/**
 	 * Triggered when the checkbox changes
 	 *
 	 * `function(state)`
 	 */
 	onChange: PropTypes.func,
+	/**
+	 * Overrides the icon of the checkbox. Can be either a component or a path/url to the image
+	 *
+	 * `React Element | string`
+	 */
+	icon: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 	/**
 	 * Theme of the component
 	 *
@@ -91,7 +91,7 @@ Checkbox.propTypes = {
 }
 
 Checkbox.defaultProps = {
-	initialState: false,
+	initialValue: false,
 	disabled: false,
 	theme: {},
 	mergeThemes: true
