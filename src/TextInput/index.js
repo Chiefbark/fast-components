@@ -5,53 +5,48 @@ import merge from 'deepmerge';
 
 import {theme, themeValidator} from './theme';
 import themeToCSS from '../utils/themeToCSS';
-import {ButtonIcon} from '../index';
 
 const TextInput = React.forwardRef((props, ref) => {
-	const {buttonIconProps, placement, label, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
+	const {label, helperText, error, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
 	const [state, setState] = useState('');
-	delete others.placeholder;
 
 	return Style.it(
 		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
 		<div className={'root'} data-disabled={others.disabled}>
-			{placement === 'left' && buttonIconProps && <ButtonIcon {...buttonIconProps} disabled={others.disabled}/>}
-			<div className={'root'} style={{borderRadius: 0}}>
-				<input type={'text'} className={'input'} ref={ref} disabled={others.disabled}
-				       aria-disabled={others.disabled} value={state}
+			<div className={'root'} style={{borderRadius: 0, flexDirection: 'column'}}>
+				<input type={'text'} className={'input'} id={others.id} disabled={others.disabled} value={state}
+				       aria-disabled={others.disabled} ref={ref} data-error={error}
 				       onChange={event => {
 					       setState(event.currentTarget.value);
 					       onChange && onChange();
 				       }}
 				       {...others}/>
-				{label && <label className={'label'} htmlFor={others.id}>{label}</label>}
+				{label && <label className={`label ${error ? 'error' : ''}`.trim()} htmlFor={others.id}>{label}</label>}
 			</div>
-			{placement === 'right' && buttonIconProps && <ButtonIcon {...buttonIconProps} disabled={others.disabled}/>}
+			{helperText && <small className={`helperText ${error ? 'error' : ''}`.trim()}>{helperText}</small>}
 		</div>
 	)
 });
 
 TextInput.propTypes = {
 	/**
-	 * If provided, will render a ButtonIcon component
-	 *
-	 * `object`
-	 *
-	 * @see ButtonIcon.propTypes
-	 */
-	buttonIconProps: PropTypes.object,
-	/**
-	 * Position of the icon if defined
-	 *
-	 * `string` - default `right`
-	 */
-	placement: PropTypes.oneOf(['left', 'right']),
-	/**
 	 * Label of the input
 	 *
 	 * `string`
 	 */
 	label: PropTypes.string,
+	/**
+	 * Text displayed to show more info about the input
+	 *
+	 * `string`
+	 */
+	helperText: PropTypes.string,
+	/**
+	 * If `true`, the input will simulate an error
+	 *
+	 * `boolean`
+	 */
+	error: PropTypes.bool,
 	/**
 	 * Theme of the component
 	 *
@@ -76,7 +71,6 @@ TextInput.propTypes = {
 
 TextInput.defaultProps = {
 	disabled: false,
-	placement: 'right',
 	theme: {},
 	mergeThemes: true
 }

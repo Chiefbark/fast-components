@@ -18,25 +18,17 @@ test('TextInput - render', () => {
 	expect(wrapper2.find('label')).toHaveLength(1);
 	expect(wrapper2.find('label').text()).toEqual('Label');
 
-	// Right button render
-	const wrapper3 = mount(<TextInput label={'Label'} placement={'right'}
-	                                  buttonIconProps={{icon: 'https://image.flaticon.com/icons/svg/2089/2089610.svg'}}/>);
-	expect(wrapper3.find('img')).toHaveLength(1);
-	expect(wrapper3.find('button')).toHaveLength(1);
-	expect(wrapper3.find('img').prop('alt')).toEqual('2089610');
-	expect(wrapper3.find('div + ForwardRef')).toHaveLength(1);
+	// HelperText render
+	const wrapper3 = mount(<TextInput label={'Label'} helperText={'This is a helper text'}/>);
+	expect(wrapper3.find('small')).toHaveLength(1);
 
-	// Left button render
-	const wrapper4 = mount(<TextInput label={'Label'} placement={'left'}
-	                                  buttonIconProps={{icon: 'https://image.flaticon.com/icons/svg/2089/2089610.svg'}}/>);
-	expect(wrapper4.find('img')).toHaveLength(1);
-	expect(wrapper4.find('button')).toHaveLength(1);
-	expect(wrapper4.find('img').prop('alt')).toEqual('2089610');
-	expect(wrapper4.find('ForwardRef + div')).toHaveLength(1);
+	// Error render
+	const wrapper4 = mount(<TextInput label={'Label'} helperText={'This is a helper text'} error={true}/>);
+	expect(wrapper4.find('small').hasClass('error')).toBe(true);
+	expect(wrapper4.find('label').hasClass('error')).toBe(true);
+	expect(wrapper4.find('input').prop('data-error')).toBe(true);
 
 	// Disabled render
-	const wrapper5 = mount(<TextInput disabled={true}
-	                                  buttonIconProps={{icon: 'https://image.flaticon.com/icons/svg/2089/2089610.svg'}}/>);
+	const wrapper5 = mount(<TextInput disabled={true}/>);
 	expect(wrapper5.find('input').prop('disabled')).toBe(true);
-	expect(wrapper5.find('button').prop('disabled')).toBe(true);
 });

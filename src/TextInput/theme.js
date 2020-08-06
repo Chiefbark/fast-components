@@ -4,10 +4,9 @@ export const theme = {
 		default: {
 			position: 'relative',
 			display: 'flex',
-			flexDirection: 'row',
+			flexDirection: 'column',
 			alignItems: 'stretch',
 			justifyContent: 'center',
-			backgroundColor: '#ffffff4d',
 			outline: 'none',
 			border: 'none',
 			borderRadius: '4px',
@@ -24,6 +23,12 @@ export const theme = {
 			fontSize: '12pt',
 			padding: '24px 16px 8px 16px'
 		},
+		'::placeholder': {
+			color: 'transparent'
+		},
+		':focus::placeholder': {
+			color: '#00000041'
+		},
 		':focus ~ .label': {
 			top: '12px',
 			color: '#1b7dcb',
@@ -33,6 +38,20 @@ export const theme = {
 			top: '12px',
 			color: '#1b7dcb',
 			fontSize: '10pt'
+		},
+		'[data-error=true] ~ .label': {
+			color: '#f44336'
+		}
+	},
+	helperText: {
+		default: {
+			fontSize: '10pt',
+			alignSelf: 'flex-start',
+			color: '#ffffffa1',
+			padding: '4px 0 0 8px'
+		},
+		'.error': {
+			color: '#f44336'
 		}
 	},
 	label: {
@@ -44,6 +63,9 @@ export const theme = {
 			color: '#00000088',
 			fontSize: '12pt',
 			transition: 'top .25s, font-size .25s'
+		},
+		'.error': {
+			color: '#f44336'
 		}
 	}
 }
