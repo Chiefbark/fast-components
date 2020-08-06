@@ -28,7 +28,11 @@ test('TextInput - render', () => {
 	expect(wrapper4.find('label').hasClass('error')).toBe(true);
 	expect(wrapper4.find('input').prop('data-error')).toBe(true);
 
+	// Initial value render
+	const wrapper5 = mount(<TextInput initialValue={'Hello World'}/>);
+	expect(wrapper5.find('input').prop('value')).toEqual('Hello World');
+
 	// Disabled render
-	const wrapper5 = mount(<TextInput disabled={true}/>);
-	expect(wrapper5.find('input').prop('disabled')).toBe(true);
+	const wrapper6 = mount(<TextInput disabled={true}/>);
+	expect(wrapper6.find('input').prop('disabled')).toBe(true);
 });
