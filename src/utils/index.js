@@ -1,4 +1,4 @@
-function themeToCSS(obj) {
+export function stylesToCSS(obj) {
 	return Object.keys(obj).map(x =>
 		Object.keys(obj[x]).map(y =>
 			y === 'default' ? `.${x}{${getStyles(obj[x][y])}}` : `.${x}${y}{${getStyles(obj[x][y])}}`
@@ -12,5 +12,3 @@ function getStyles(obj) {
 			`${k.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`)}:${v}`
 		).join(';');
 }
-
-export default themeToCSS;
