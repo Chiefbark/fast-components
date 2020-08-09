@@ -3,33 +3,49 @@ import PropTypes from 'prop-types';
 import Style from 'style-it';
 import merge from 'deepmerge';
 
-import {theme, themeValidator} from './theme';
-import themeToCSS from '../utils/themeToCSS';
+import {styles, stylesValidator} from './styles';
+import {stylesToCSS} from '../utils';
+import {ThemeConsumer} from '../Theme';
 
 const TextInput = React.forwardRef((props, ref) => {
-	const {initialValue, type, label, helperText, error, theme: customTheme, mergeThemes, children, onChange, ...others} = props;
+	const {variant, initialValue, type, helperText, error, styles: customStyles, mergeStyles, children, onChange, ...others} = props;
+	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
 	const [state, setState] = useState(initialValue);
 
-	return Style.it(
-		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
-		<div className={'root'} data-disabled={others.disabled}>
-			<div className={'root'} style={{borderRadius: 0, flexDirection: 'column'}}>
-				<input type={['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text'}
-				       className={'input'} id={others.id} disabled={others.disabled} value={state}
-				       aria-disabled={others.disabled} ref={ref} data-error={error}
-				       onChange={event => {
-					       setState(event.currentTarget.value);
-					       onChange && onChange();
-				       }}
-				       {...others}/>
-				{label && <label className={`label ${error ? 'error' : ''}`.trim()} htmlFor={others.id}>{label}</label>}
-			</div>
-			{helperText && <small className={`helperText ${error ? 'error' : ''}`.trim()}>{helperText}</small>}
-		</div>
-	)
+	return <ThemeConsumer>
+		{value =>
+			Style.it(
+				stylesToCSS(mergeStyles ?
+					merge(styles(value, _variant), stylesValidator(customStyles)) :
+					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
+				<div className={'root'} data-disabled={others.disabled}>
+					<div className={'root'} style={{borderRadius: 0, flexDirection: 'column'}}>
+						<input type={['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text'}
+						       className={'input'} id={others.id} disabled={others.disabled} value={state}
+						       aria-disabled={others.disabled} ref={ref} data-error={error}
+						       onChange={event => {
+							       setState(event.currentTarget.value);
+							       onChange && onChange();
+						       }}
+						       {...others}/>
+						{children &&
+						<label className={`label ${error ? 'error' : ''}`.trim()} htmlFor={others.id}>{children}</label>
+						}
+					</div>
+					{helperText && <small className={`helperText ${error ? 'error' : ''}`.trim()}>{helperText}</small>}
+				</div>
+			)
+		}
+	</ThemeConsumer>
 });
 
 TextInput.propTypes = {
+	/**
+	 * Variant of the component. Can be `primary` or `secondary`
+	 *
+	 * `string` - default `primary`
+	 */
+	variant: PropTypes.oneOf(['primary', 'secondary']),
 	/**
 	 * Sets the initial value of the input
 	 *
@@ -43,12 +59,6 @@ TextInput.propTypes = {
 	 */
 	type: PropTypes.oneOf(['email', 'number', 'password', 'tel', 'text']),
 	/**
-	 * Label of the input
-	 *
-	 * `string`
-	 */
-	label: PropTypes.string,
-	/**
 	 * Text displayed to show more info about the input
 	 *
 	 * `string`
@@ -61,33 +71,34 @@ TextInput.propTypes = {
 	 */
 	error: PropTypes.bool,
 	/**
-	 * Theme of the component
+	 * Styles of the component
 	 *
 	 * `object`
 	 *
-	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/TextInput/theme.js TextInput - default theme}
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/TextInput/styles.js TextInput - default Styles}
 	 */
-	theme: PropTypes.shape({
+	styles: PropTypes.shape({
 		root: PropTypes.shape({default: PropTypes.object}),
 		input: PropTypes.shape({default: PropTypes.object}),
 		label: PropTypes.shape({default: PropTypes.object})
 	}),
 	/**
-	 * If `true`, the theme of the component will inherit and/or override all the properties from the default theme
+	 * If `true`, the Styles of the component will inherit and/or override all the properties from the default Styles
 	 *
 	 * `boolean` - default `true`
 	 *
-	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/TextInput/theme.js TextInput - default theme}
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/TextInput/styles.js TextInput - default Styles}
 	 */
-	mergeThemes: PropTypes.bool
+	mergeStyles: PropTypes.bool
 }
 
 TextInput.defaultProps = {
+	variant: 'primary',
 	initialValue: '',
 	type: 'text',
 	disabled: false,
-	theme: {},
-	mergeThemes: true
+	styles: {},
+	mergeStyles: true
 }
 
 export default TextInput;

@@ -4,8 +4,9 @@ import Style from 'style-it';
 import merge from 'deepmerge';
 import path from 'path';
 
-import {theme, themeValidator} from './theme';
-import themeToCSS from '../utils/themeToCSS';
+import {styles, stylesValidator} from './styles';
+import {stylesToCSS} from '../utils';
+import {ThemeConsumer} from '../Theme';
 
 function renderIcon(Icon, placement) {
 	return (
@@ -22,23 +23,36 @@ function renderIcon(Icon, placement) {
  * @return {React.Component}
  */
 const Button = React.forwardRef((props, ref) => {
-	const {icon: Icon, placement, theme: customTheme, mergeThemes, children, ...others} = props;
+	const {variant, icon: Icon, placement, styles: customStyles, mergeStyles, children, ...others} = props;
+	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
 
-	return Style.it(
-		themeToCSS(mergeThemes ? merge(theme, themeValidator(customTheme)) : customTheme ? themeValidator(customTheme) : theme),
-		<button type={'button'}
-		        className={'root'}
-		        style={{cursor: others.disabled ? 'default' : 'pointer'}}
-		        aria-disabled={others.disabled} ref={ref}
-		        {...others}>
-			{placement === 'left' && renderIcon(Icon, placement)}
-			<span>{children}</span>
-			{placement === 'right' && renderIcon(Icon, placement)}
-		</button>
-	)
+	return <ThemeConsumer>
+		{value =>
+			Style.it(
+				stylesToCSS(mergeStyles ?
+					merge(styles(value, _variant), stylesValidator(customStyles)) :
+					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
+				<button type={'button'}
+				        className={'root'}
+				        style={{cursor: others.disabled ? 'default' : 'pointer'}}
+				        aria-disabled={others.disabled} ref={ref}
+				        {...others}>
+					{placement === 'left' && renderIcon(Icon, placement)}
+					<span>{children}</span>
+					{placement === 'right' && renderIcon(Icon, placement)}
+				</button>
+			)
+		}
+	</ThemeConsumer>
 });
 
 Button.propTypes = {
+	/**
+	 * Variant of the component. Can be `primary` or `secondary`
+	 *
+	 * `string` - default `primary`
+	 */
+	variant: PropTypes.oneOf(['primary', 'secondary']),
 	/**
 	 * Displays an icon in the button. Can be either a component or a path/url to the image
 	 *
@@ -52,31 +66,32 @@ Button.propTypes = {
 	 */
 	placement: PropTypes.oneOf(['left', 'right']),
 	/**
-	 * Theme of the component
+	 * Styles of the component
 	 *
 	 * `object`
 	 *
-	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/theme.js Button - default theme}
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/styles.js Button - default Styles}
 	 */
-	theme: PropTypes.shape({
+	styles: PropTypes.shape({
 		root: PropTypes.shape({default: PropTypes.object}),
 		icon: PropTypes.shape({default: PropTypes.object})
 	}),
 	/**
-	 * If `true`, the theme of the component will inherit and/or override all the properties from the default theme
+	 * If `true`, the Styles of the component will inherit and/or override all the properties from the default Styles
 	 *
 	 * `boolean` - default `true`
 	 *
-	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/theme.js Button - default theme}
+	 * @see {@link https://github.com/Chiefbark/fast-components/tree/master/src/Button/styles.js Button - default Styles}
 	 */
-	mergeThemes: PropTypes.bool
+	mergeStyles: PropTypes.bool
 }
 
 Button.defaultProps = {
+	variant: 'primary',
 	disabled: false,
 	placement: 'right',
-	theme: {},
-	mergeThemes: true
+	styles: {},
+	mergeStyles: true
 }
 
 export default Button;
