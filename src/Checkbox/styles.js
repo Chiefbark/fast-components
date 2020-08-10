@@ -33,6 +33,9 @@ export const styles = (theme, variant = 'primary') => {
 			},
 			'[data-error=true] .icon': {
 				borderColor: _theme.error.main
+			},
+			'[data-checked=true][data-error=true] .icon': {
+				backgroundColor: _theme.error.main
 			}
 		},
 		icon: {
