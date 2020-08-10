@@ -10,6 +10,7 @@ import {ThemeConsumer} from '../Theme';
 const TextInput = React.forwardRef((props, ref) => {
 	const {variant, initialValue, type, helperText, error, styles: customStyles, mergeStyles, children, onChange, ...others} = props;
 	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
+	const _type = ['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text';
 	const [state, setState] = useState(initialValue);
 
 	return <ThemeConsumer>
@@ -18,9 +19,9 @@ const TextInput = React.forwardRef((props, ref) => {
 				stylesToCSS(mergeStyles ?
 					merge(styles(value, _variant), stylesValidator(customStyles)) :
 					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
-				<div className={'root'} data-disabled={others.disabled}>
+				<div className={'root'} data-disabled={others.disabled} data-error={error}>
 					<div className={'root'} style={{borderRadius: 0, flexDirection: 'column'}}>
-						<input type={['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text'}
+						<input type={_type}
 						       className={'input'} id={others.id} disabled={others.disabled} value={state}
 						       aria-disabled={others.disabled} ref={ref} data-error={error}
 						       onChange={event => {
@@ -29,10 +30,10 @@ const TextInput = React.forwardRef((props, ref) => {
 						       }}
 						       {...others}/>
 						{children &&
-						<label className={`label ${error ? 'error' : ''}`.trim()} htmlFor={others.id}>{children}</label>
+						<label className={'label'} htmlFor={others.id}>{children}</label>
 						}
 					</div>
-					{helperText && <small className={`helperText ${error ? 'error' : ''}`.trim()}>{helperText}</small>}
+					{helperText && <small className={'helperText'}>{helperText}</small>}
 				</div>
 			)
 		}
