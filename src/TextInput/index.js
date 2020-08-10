@@ -81,6 +81,7 @@ TextInput.propTypes = {
 	styles: PropTypes.shape({
 		root: PropTypes.shape({default: PropTypes.object}),
 		input: PropTypes.shape({default: PropTypes.object}),
+		helperText: PropTypes.shape({default: PropTypes.object}),
 		label: PropTypes.shape({default: PropTypes.object})
 	}),
 	/**
