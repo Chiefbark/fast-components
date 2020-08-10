@@ -1,15 +1,13 @@
 const defaultTheme = {
 	black: {
 		main: '#000',
-		text: '#ddd',
 		'75': '#000000BF',
 		'50': '#00000080',
 		'25': '#00000040'
 	},
 	white: {
 		main: '#fff',
-		text: '#111',
-		'75': '#ffffffBF',
+		'75': '#ffffffbf',
 		'50': '#ffffff80',
 		'25': '#ffffff40'
 	},
@@ -24,6 +22,11 @@ const defaultTheme = {
 		main: '#f50057',
 		dark: '#ab003c',
 		text: '#ddd'
+	},
+	disabled: {
+		light: '#ffffff6b',
+		main: '#ffffff4c',
+		dark: '#ffffff1e'
 	},
 	error: {
 		light: '#e57373',

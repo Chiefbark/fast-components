@@ -37,9 +37,9 @@ export const styles = (theme, variant = 'primary') => {
 				backgroundColor: _theme[variant].light
 			},
 			'[disabled]': {
-				backgroundColor: _theme.black['25'],
-				borderColor: _theme.black['25'],
-				color: _theme.white['25']
+				backgroundColor: _theme.disabled.main,
+				borderColor: _theme.disabled.dark,
+				color: _theme.disabled.light
 			}
 		},
 		icon: {

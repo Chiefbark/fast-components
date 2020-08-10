@@ -19,11 +19,11 @@ export const styles = (theme, variant = 'primary') => {
 				backgroundColor: 'transparent',
 				outline: 'none',
 				border: 'none',
-				color: _theme[variant].text,
+				color: 'inherit',
 				fontSize: '14pt'
 			},
 			'[data-disabled=true]': {
-				color: _theme.white['25']
+				color: _theme.disabled.light
 			},
 			' input:focus ~ .icon': {
 				outline: `${_theme[variant].light} auto 1px`
@@ -44,9 +44,12 @@ export const styles = (theme, variant = 'primary') => {
 			'[data-checked=true] path': {
 				fill: _theme[variant].text
 			},
-			'[data-disabled=true]': {
-				backgroundColor: _theme.white['25'],
-				borderColor: _theme.black['25']
+			'[data-disabled=true][data-checked=false]': {
+				borderColor: _theme.disabled.dark
+			},
+			'[data-disabled=true][data-checked=true]': {
+				backgroundColor: _theme.disabled.main,
+				borderColor: _theme.disabled.dark
 			}
 		},
 		label: {}

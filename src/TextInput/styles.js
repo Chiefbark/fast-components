@@ -24,12 +24,15 @@ export const styles = (theme, variant = 'primary') => {
 				color: _theme[variant].text
 			},
 			'[data-disabled=true]': {
-				color: _theme.white['25']
+				color: _theme.disabled.light
+			},
+			'[data-error=true] .helperText': {
+				color: _theme.error.main
 			}
 		},
 		input: {
 			default: {
-				border: `1px solid ${_theme.white.main}`,
+				border: `1px solid ${_theme.disabled.main}`,
 				fontSize: '12pt',
 				padding: '24px 16px 8px 16px'
 			},
@@ -51,16 +54,23 @@ export const styles = (theme, variant = 'primary') => {
 				top: '12px',
 				fontSize: '10pt'
 			},
+			'[data-error=true]': {
+				borderColor: _theme.error.light
+			},
 			'[data-error=true] ~ .label': {
-				color: _theme.error.main
+				color: _theme.error.main,
+				borderColor: _theme.error.light
 			},
 			'[disabled]': {
-				backgroundColor: _theme.white['25'],
-				borderColor: _theme.black['25'],
-				color: _theme.white['25']
+				backgroundColor: _theme.disabled.main,
+				borderColor: _theme.disabled.dark,
+				color: _theme.disabled.light
 			},
 			'[disabled]::placeholder': {
-				color: _theme.white['25']
+				color: _theme.disabled.light
+			},
+			'[disabled] ~ .label': {
+				color: _theme.disabled.light
 			}
 		},
 		helperText: {
@@ -69,9 +79,6 @@ export const styles = (theme, variant = 'primary') => {
 				color: '#ffffffa1',
 				fontSize: '10pt',
 				padding: '4px 0 0 8px'
-			},
-			'.error': {
-				color: _theme.error.main
 			}
 		},
 		label: {
@@ -84,9 +91,6 @@ export const styles = (theme, variant = 'primary') => {
 				fontSize: '12pt',
 				pointerEvents: 'none',
 				transition: 'top .25s, font-size .25s'
-			},
-			'.error': {
-				color: _theme.error.main
 			}
 		}
 	}
@@ -96,6 +100,7 @@ export function stylesValidator(styles) {
 	const validatedStyles = {};
 	if (styles.root) validatedStyles.root = styles.root;
 	if (styles.input) validatedStyles.input = styles.input;
+	if (styles.helperText) validatedStyles.helperText = styles.helperText;
 	if (styles.label) validatedStyles.label = styles.label;
 	return validatedStyles;
 }
