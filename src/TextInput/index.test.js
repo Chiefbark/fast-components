@@ -20,8 +20,8 @@ test('TextInput - render', () => {
 
 	// Error render
 	const wrapper3 = mount(<TextInput helperText={'This is a helper text'} error={true}>Label</TextInput>);
-	expect(wrapper3.find('small').hasClass('error')).toBe(true);
-	expect(wrapper3.find('label').hasClass('error')).toBe(true);
+	console.log(wrapper3.find('div'))
+	expect(wrapper3.find('div[data-error=true]')).toHaveLength(1);
 	expect(wrapper3.find('input').prop('data-error')).toBe(true);
 
 	// Initial value render
