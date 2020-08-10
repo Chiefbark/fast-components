@@ -13,7 +13,7 @@ export const styles = (theme, variant = 'primary') => {
 		root: {
 			default: {
 				display: 'flex',
-				flexDirection: 'row',
+				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
 				backgroundColor: 'transparent',
@@ -27,6 +27,12 @@ export const styles = (theme, variant = 'primary') => {
 			},
 			' input:focus ~ .icon': {
 				outline: `${_theme[variant].light} auto 1px`
+			},
+			'[data-error=true] .helperText': {
+				color: _theme.error.main
+			},
+			'[data-error=true] .icon': {
+				borderColor: _theme.error.main
 			}
 		},
 		icon: {
@@ -52,7 +58,15 @@ export const styles = (theme, variant = 'primary') => {
 				borderColor: _theme.disabled.dark
 			}
 		},
-		label: {}
+		label: {},
+		helperText: {
+			default: {
+				alignSelf: 'flex-start',
+				color: '#ffffffa1',
+				fontSize: '10pt',
+				padding: '4px 0 0 8px'
+			}
+		},
 	}
 };
 
@@ -61,5 +75,6 @@ export function stylesValidator(styles) {
 	if (styles.root) validatedStyles.root = styles.root;
 	if (styles.icon) validatedStyles.icon = styles.icon;
 	if (styles.label) validatedStyles.label = styles.label;
+	if (styles.helperText) validatedStyles.helperText = styles.helperText;
 	return validatedStyles;
 }

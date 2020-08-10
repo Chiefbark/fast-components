@@ -14,7 +14,7 @@ import {ThemeConsumer} from '../Theme';
  * @return {React.Component}
  */
 const Checkbox = React.forwardRef((props, ref) => {
-	const {variant, initialValue, onChange, icon: Icon, styles: customStyles, mergeStyles, children, ...others} = props;
+	const {variant, initialValue, helperText, error, onChange, icon: Icon, styles: customStyles, mergeStyles, children, ...others} = props;
 	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
 	const [state, setState] = useState(initialValue);
 
@@ -24,31 +24,34 @@ const Checkbox = React.forwardRef((props, ref) => {
 				stylesToCSS(mergeStyles ?
 					merge(styles(value, _variant), stylesValidator(customStyles)) :
 					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
-				<div className={'root'} style={{cursor: others.disabled ? 'default' : 'pointer'}}
-				     data-checked={state} data-disabled={others.disabled}
-				     onClick={() => {
-					     !others.disabled && setState(!state);
-					     !others.disabled && onChange && onChange(!state);
-				     }}>
-					<input type={'checkbox'} disabled={others.disabled} value={state} checked={state}
-					       onChange={event => setState(event.target.checked)}
-					       aria-checked={state} aria-disabled={others.disabled} ref={ref}
-					       style={{width: 0, height: 0, margin: 0, padding: 0}}
-					       {...others}/>
-					{Icon ?
-						typeof Icon === 'string' ?
-							<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={'icon'}/>
+				<div className={'root'} data-checked={state} data-disabled={others.disabled} data-error={error}>
+					<div className={'root'}
+					     style={{
+						     borderRadius: 0, flexDirection: 'row', cursor: others.disabled ? 'default' : 'pointer'
+					     }}
+					     onClick={() => {
+						     !others.disabled && setState(!state);
+						     !others.disabled && onChange && onChange(!state);
+					     }}>
+						<input type={'checkbox'} disabled={others.disabled} value={state} checked={state}
+						       onChange={event => setState(event.target.checked)}
+						       aria-checked={state} aria-disabled={others.disabled} ref={ref}
+						       style={{width: 0, height: 0, margin: 0, padding: 0}}
+						       {...others}/>
+						{Icon ?
+							typeof Icon === 'string' ?
+								<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={'icon'}/>
+								:
+								<Icon className={'icon'} data-checked={state} data-disabled={others.disabled}/>
 							:
-							<Icon className={'icon'} data-checked={state} data-disabled={others.disabled}/>
-						:
-						<svg className={'icon'} xmlns="http://www.w3.org/2000/svg" viewBox={'0 0 24 24'}
-						     data-checked={state} data-disabled={others.disabled}>
-							{state && <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>}
-						</svg>
-					}
-					<span className={'label'} data-checked={state} data-disabled={others.disabled}>
-			     {children}
-			     </span>
+							<svg className={'icon'} xmlns="http://www.w3.org/2000/svg" viewBox={'0 0 24 24'}
+							     data-checked={state} data-disabled={others.disabled}>
+								{state && <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>}
+							</svg>
+						}
+						<span className={'label'} data-checked={state} data-disabled={others.disabled}>{children}</span>
+					</div>
+					{helperText && <small className={'helperText'}>{helperText}</small>}
 				</div>
 			)
 		}
@@ -68,6 +71,18 @@ Checkbox.propTypes = {
 	 * `boolean` - default `false`
 	 */
 	initialValue: PropTypes.bool,
+	/**
+	 * Text displayed to show more info about the input
+	 *
+	 * `string`
+	 */
+	helperText: PropTypes.string,
+	/**
+	 * If `true`, the input will simulate an error
+	 *
+	 * `boolean`
+	 */
+	error: PropTypes.bool,
 	/**
 	 * Triggered when the checkbox changes
 	 *
@@ -90,6 +105,7 @@ Checkbox.propTypes = {
 	styles: PropTypes.shape({
 		root: PropTypes.shape({default: PropTypes.object}),
 		icon: PropTypes.shape({default: PropTypes.object}),
+		helperText: PropTypes.shape({default: PropTypes.object}),
 		label: PropTypes.shape({default: PropTypes.object})
 	}),
 	/**
