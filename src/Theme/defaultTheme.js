@@ -11,6 +11,12 @@ const defaultTheme = {
 		'50': '#ffffff80',
 		'25': '#ffffff40'
 	},
+	default: {
+		light: '#f0f0f0',
+		main: '#e0e0e0',
+		dark: '#d0d0d0',
+		text: '#111'
+	},
 	primary: {
 		light: '#4dabf5',
 		main: '#2196f3',
@@ -24,9 +30,14 @@ const defaultTheme = {
 		text: '#ddd'
 	},
 	disabled: {
-		light: '#ffffff6b',
+		light: '#ffffff1e',
 		main: '#ffffff4c',
-		dark: '#ffffff1e'
+		dark: '#ffffff6b'
+	},
+	muted: {
+		light: '#ffffff',
+		main: '#bfbfbf',
+		dark: '#808080'
 	},
 	error: {
 		light: '#e57373',
