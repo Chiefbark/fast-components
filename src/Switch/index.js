@@ -14,19 +14,18 @@ const DATA_ID = 'FC_Switch';
  * @return {React.Component}
  */
 const Switch = React.forwardRef((props, ref) => {
-	const {variant, initialValue, helperText, error, onChange, icon: Icon, styles: customStyles, mergeStyles, children, className, ...others} = props;
+	const {variant, initialValue, helperText, error, onChange, icon: Icon, styles: customStyles, mergeStyles, children, className: customClassName, ...others} = props;
 	const _variant = ['default', 'primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
 	const [state, setState] = useState(initialValue);
 
 	return <ThemeConsumer>
 		{value => {
-
 			const className = `${DATA_ID}-${_variant}${getClassName(value, customStyles, Switch)}`;
 
 			return withCSS(mergeStyles ?
 				merge(styles(value, _variant), stylesValidator(customStyles)) :
 				customStyles ? stylesValidator(customStyles) : styles(value, _variant),
-				<div className={`${className} root ${className}`}
+				<div className={`${className} root ${customClassName}`.trim()}
 				     data-checked={state} data-disabled={others.disabled} data-error={error}>
 					<div style={{cursor: others.disabled ? 'default' : 'pointer'}}
 					     onClick={() => {
@@ -134,7 +133,8 @@ Switch.defaultProps = {
 	variant: 'default',
 	initialValue: false,
 	mergeStyles: true,
-	disabled: false
+	disabled: false,
+	error: false
 }
 
 export default Switch;

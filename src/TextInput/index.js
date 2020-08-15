@@ -9,7 +9,7 @@ import {ThemeConsumer} from '../Theme';
 const DATA_ID = 'FC_TextInput';
 
 const TextInput = React.forwardRef((props, ref) => {
-	const {variant, initialValue, type, helperText, error, styles: customStyles, mergeStyles, children, className, onChange, ...others} = props;
+	const {variant, initialValue, type, helperText, error, styles: customStyles, mergeStyles, children, className: customClassName, onChange, ...others} = props;
 	const _variant = ['default', 'primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
 	const _type = ['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text';
 	const [state, setState] = useState(initialValue);
@@ -21,7 +21,7 @@ const TextInput = React.forwardRef((props, ref) => {
 			return withCSS(mergeStyles ?
 				merge(styles(value, _variant), stylesValidator(customStyles)) :
 				customStyles ? stylesValidator(customStyles) : styles(value, _variant),
-				<div className={`${className} root ${className}`}
+				<div className={`${className} root ${customClassName}`.trim()}
 				     data-disabled={others.disabled} data-error={error}>
 					<div>
 						<input type={_type} disabled={others.disabled} value={state}
@@ -125,7 +125,8 @@ TextInput.defaultProps = {
 	initialValue: '',
 	type: 'text',
 	mergeStyles: true,
-	disabled: false
+	disabled: false,
+	error: false
 }
 
 export default TextInput;

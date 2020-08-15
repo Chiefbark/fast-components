@@ -15,7 +15,7 @@ const DATA_ID = 'FC_ButtonIcon';
  * @return {React.Component}
  */
 const ButtonIcon = React.forwardRef((props, ref) => {
-	const {variant, icon: Icon, rounded, styles: customStyles, mergeStyles, children, className, ...others} = props;
+	const {variant, icon: Icon, rounded, styles: customStyles, mergeStyles, children, className: customClassName, ...others} = props;
 	const _variant = ['default', 'primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'default';
 
 	return <ThemeConsumer>
@@ -25,7 +25,7 @@ const ButtonIcon = React.forwardRef((props, ref) => {
 			return withCSS(mergeStyles ?
 				merge(styles(value, _variant), stylesValidator(customStyles)) :
 				customStyles ? stylesValidator(customStyles) : styles(value, _variant),
-				<button type={'button'} className={`${className} root ${className}`}
+				<button type={'button'} className={`${className} root ${customClassName}`.trim()}
 				        style={{
 					        cursor: others.disabled ? 'default' : 'pointer',
 					        borderRadius: rounded ? '50%' : undefined
