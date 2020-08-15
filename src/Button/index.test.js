@@ -10,6 +10,7 @@ test('Button - render', () => {
 	// Default render
 	const wrapper1 = mount(<Button>button</Button>);
 	expect(wrapper1.find('button').hasClass('root')).toEqual(true);
+	expect(wrapper1.find('span').text()).toEqual('button');
 	expect(wrapper1.find('img')).toHaveLength(0);
 	expect(wrapper1.find('svg')).toHaveLength(0);
 
@@ -29,4 +30,5 @@ test('Button - render', () => {
 	// Disabled render
 	const wrapper4 = mount(<Button disabled={true}>button</Button>);
 	expect(wrapper4.find('button').prop('disabled')).toBe(true);
+	expect(wrapper4.find('button').prop('aria-disabled')).toBe(true);
 });
