@@ -1,5 +1,5 @@
 import merge from 'deepmerge';
-import defaultTheme from '../Theme/defaultTheme';
+import {defaultTheme} from '../Theme';
 
 /**
  *
@@ -7,7 +7,7 @@ import defaultTheme from '../Theme/defaultTheme';
  * @param variant
  * @return
  */
-export const styles = (theme, variant = 'primary') => {
+export const styles = (theme, variant) => {
 	const _theme = merge(defaultTheme, theme);
 	return {
 		root: {
@@ -15,13 +15,21 @@ export const styles = (theme, variant = 'primary') => {
 				position: 'relative',
 				display: 'flex',
 				flexDirection: 'column',
-				alignItems: 'stretch',
+				alignItems: 'flex-start',
 				justifyContent: 'center',
 				outline: 'none',
 				border: 'none',
 				borderRadius: '4px',
 				overflow: 'hidden',
 				color: _theme[variant].text
+			},
+			'>div': {
+				position: 'relative',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'flex-start',
+				justifyContent: 'center',
+				borderRadius: 0
 			},
 			'[data-disabled=true]': {
 				color: _theme.disabled.light
@@ -43,7 +51,7 @@ export const styles = (theme, variant = 'primary') => {
 				outline: `${_theme[variant].light} auto 1px`
 			},
 			':focus::placeholder': {
-				color: _theme.black['25']
+				color: _theme.muted.main
 			},
 			':focus ~ .label': {
 				top: '12px',
@@ -64,21 +72,13 @@ export const styles = (theme, variant = 'primary') => {
 			'[disabled]': {
 				backgroundColor: _theme.disabled.main,
 				borderColor: _theme.disabled.dark,
-				color: _theme.disabled.light
+				color: _theme.disabled.dark
 			},
 			'[disabled]::placeholder': {
-				color: _theme.disabled.light
+				color: _theme.disabled.main
 			},
 			'[disabled] ~ .label': {
-				color: _theme.disabled.light
-			}
-		},
-		helperText: {
-			default: {
-				alignSelf: 'flex-start',
-				color: '#ffffffa1',
-				fontSize: '10pt',
-				padding: '4px 0 0 8px'
+				color: _theme.disabled.dark
 			}
 		},
 		label: {
@@ -87,10 +87,18 @@ export const styles = (theme, variant = 'primary') => {
 				transform: 'translate(0, -50%)',
 				top: '50%',
 				left: '16px',
-				color: _theme.black['50'],
+				color: _theme.muted.dark,
 				fontSize: '12pt',
 				pointerEvents: 'none',
 				transition: 'top .25s, font-size .25s'
+			}
+		},
+		helperText: {
+			default: {
+				alignSelf: 'flex-start',
+				color: _theme.muted.main,
+				fontSize: '10pt',
+				padding: '4px 0 0 8px'
 			}
 		}
 	}
@@ -98,9 +106,11 @@ export const styles = (theme, variant = 'primary') => {
 
 export function stylesValidator(styles) {
 	const validatedStyles = {};
-	if (styles.root) validatedStyles.root = styles.root;
-	if (styles.input) validatedStyles.input = styles.input;
-	if (styles.helperText) validatedStyles.helperText = styles.helperText;
-	if (styles.label) validatedStyles.label = styles.label;
+	if (styles) {
+		if (styles.root) validatedStyles.root = styles.root;
+		if (styles.input) validatedStyles.input = styles.input;
+		if (styles.helperText) validatedStyles.helperText = styles.helperText;
+		if (styles.label) validatedStyles.label = styles.label;
+	}
 	return validatedStyles;
 }

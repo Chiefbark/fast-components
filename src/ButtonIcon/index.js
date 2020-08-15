@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Style from 'style-it';
 import merge from 'deepmerge';
 import path from 'path';
 
 import {styles, stylesValidator} from './styles';
-import {stylesToCSS} from '../utils';
+import {getClassName, withCSS} from '../utils';
 import {ThemeConsumer} from '../Theme';
+
+const DATA_ID = 'FC_ButtonIcon';
 
 /**
  * @author {@link https://github.com/Chiefbark Chiefbark}
@@ -14,16 +15,17 @@ import {ThemeConsumer} from '../Theme';
  * @return {React.Component}
  */
 const ButtonIcon = React.forwardRef((props, ref) => {
-	const {variant, icon: Icon, rounded, styles: customStyles, mergeStyles, children, ...others} = props;
-	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
+	const {variant, icon: Icon, rounded, styles: customStyles, mergeStyles, children, className, ...others} = props;
+	const _variant = ['default', 'primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'default';
 
 	return <ThemeConsumer>
-		{value =>
-			Style.it(
-				stylesToCSS(mergeStyles ?
-					merge(styles(value, _variant), stylesValidator(customStyles)) :
-					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
-				<button type={'button'} className={'root'}
+		{value => {
+			const className = `${DATA_ID}-${_variant}${getClassName(value, customStyles, ButtonIcon)}`;
+
+			return withCSS(mergeStyles ?
+				merge(styles(value, _variant), stylesValidator(customStyles)) :
+				customStyles ? stylesValidator(customStyles) : styles(value, _variant),
+				<button type={'button'} className={`${className} root ${className}`}
 				        style={{
 					        cursor: others.disabled ? 'default' : 'pointer',
 					        borderRadius: rounded ? '50%' : undefined
@@ -31,23 +33,41 @@ const ButtonIcon = React.forwardRef((props, ref) => {
 				        aria-disabled={others.disabled} ref={ref}
 				        {...others}>
 					{typeof Icon === 'string' ?
-						<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={'icon'}/>
+						<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={`${className} icon`}
+						     data-disabled={others.disabled}/>
 						:
-						Icon && <Icon className={'icon'}/>
+						Icon && <Icon className={`${className} icon`} data-disabled={others.disabled}/>
 					}
-				</button>
-			)
+				</button>,
+				className)
+		}
 		}
 	</ThemeConsumer>
 });
 
+/**
+ * Used to create unique css stylesheets when the styles are overridden
+ * @type {number}
+ */
+ButtonIcon.stylesID = 0;
+/**
+ * Used to create unique css stylesheets when the theme is overridden
+ * @type {number}
+ */
+ButtonIcon.themeID = 0;
+/**
+ * Stores the hashes of all themes used in this Component, so there are no duplicated css stylesheets
+ * @type {string[]}
+ */
+ButtonIcon.themeHashes = [];
+
 ButtonIcon.propTypes = {
 	/**
-	 * Variant of the component. Can be `primary` or `secondary`
+	 * Variant of the component. Can be `default`, `primary` or `secondary`
 	 *
-	 * `string` - default `primary`
+	 * `string` - default `default`
 	 */
-	variant: PropTypes.oneOf(['primary', 'secondary']),
+	variant: PropTypes.oneOf(['default', 'primary', 'secondary']),
 	/**
 	 * Displays an icon in the button. Can be either a component or a path/url to the image
 	 *
@@ -82,11 +102,10 @@ ButtonIcon.propTypes = {
 }
 
 ButtonIcon.defaultProps = {
-	variant: 'primary',
-	disabled: false,
+	variant: 'default',
 	rounded: true,
-	styles: {},
-	mergeStyles: true
+	mergeStyles: true,
+	disabled: false
 }
 
 export default ButtonIcon;

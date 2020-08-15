@@ -1,52 +1,78 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Style from 'style-it';
 import merge from 'deepmerge';
 
 import {styles, stylesValidator} from './styles';
-import {stylesToCSS} from '../utils';
+import {getClassName, withCSS} from '../utils';
 import {ThemeConsumer} from '../Theme';
 
+const DATA_ID = 'FC_TextInput';
+
 const TextInput = React.forwardRef((props, ref) => {
-	const {variant, initialValue, type, helperText, error, styles: customStyles, mergeStyles, children, onChange, ...others} = props;
-	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
+	const {variant, initialValue, type, helperText, error, styles: customStyles, mergeStyles, children, className, onChange, ...others} = props;
+	const _variant = ['default', 'primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
 	const _type = ['email', 'number', 'password', 'tel', 'text'].indexOf(type) >= 0 ? type : 'text';
 	const [state, setState] = useState(initialValue);
 
 	return <ThemeConsumer>
-		{value =>
-			Style.it(
-				stylesToCSS(mergeStyles ?
-					merge(styles(value, _variant), stylesValidator(customStyles)) :
-					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
-				<div className={'root'} data-disabled={others.disabled} data-error={error}>
-					<div className={'root'} style={{borderRadius: 0, flexDirection: 'column'}}>
-						<input type={_type}
-						       className={'input'} id={others.id} disabled={others.disabled} value={state}
-						       aria-disabled={others.disabled} ref={ref} data-error={error}
+		{value => {
+			const className = `${DATA_ID}-${_variant}${getClassName(value, customStyles, TextInput)}`;
+
+			return withCSS(mergeStyles ?
+				merge(styles(value, _variant), stylesValidator(customStyles)) :
+				customStyles ? stylesValidator(customStyles) : styles(value, _variant),
+				<div className={`${className} root ${className}`}
+				     data-disabled={others.disabled} data-error={error}>
+					<div>
+						<input type={_type} disabled={others.disabled} value={state}
+						       className={`${className} input`}
 						       onChange={event => {
 							       setState(event.currentTarget.value);
 							       onChange && onChange();
 						       }}
+						       aria-disabled={others.disabled} data-error={error} ref={ref}
 						       {...others}/>
-						{children &&
-						<label className={'label'} htmlFor={others.id}>{children}</label>
-						}
+						<label className={`${className} label`} htmlFor={others.id}
+						       data-disabled={others.disabled} data-error={error}>
+							{children}
+						</label>
 					</div>
-					{helperText && <small className={'helperText'}>{helperText}</small>}
-				</div>
-			)
+					{helperText &&
+					<small className={`${className} helperText`}
+					       data-disabled={others.disabled} data-error={error}>
+						{helperText}
+					</small>
+					}
+				</div>,
+				className)
+		}
 		}
 	</ThemeConsumer>
 });
 
+/**
+ * Used to create unique css stylesheets when the styles are overridden
+ * @type {number}
+ */
+TextInput.stylesID = 0;
+/**
+ * Used to create unique css stylesheets when the theme is overridden
+ * @type {number}
+ */
+TextInput.themeID = 0;
+/**
+ * Stores the hashes of all themes used in this Component, so there are no duplicated css stylesheets
+ * @type {string[]}
+ */
+TextInput.themeHashes = [];
+
 TextInput.propTypes = {
 	/**
-	 * Variant of the component. Can be `primary` or `secondary`
+	 * Variant of the component. Can be `default`, `primary` or `secondary`
 	 *
 	 * `string` - default `primary`
 	 */
-	variant: PropTypes.oneOf(['primary', 'secondary']),
+	variant: PropTypes.oneOf(['default', 'primary', 'secondary']),
 	/**
 	 * Sets the initial value of the input
 	 *
@@ -81,8 +107,8 @@ TextInput.propTypes = {
 	styles: PropTypes.shape({
 		root: PropTypes.shape({default: PropTypes.object}),
 		input: PropTypes.shape({default: PropTypes.object}),
-		helperText: PropTypes.shape({default: PropTypes.object}),
-		label: PropTypes.shape({default: PropTypes.object})
+		label: PropTypes.shape({default: PropTypes.object}),
+		helperText: PropTypes.shape({default: PropTypes.object})
 	}),
 	/**
 	 * If `true`, the Styles of the component will inherit and/or override all the properties from the default Styles
@@ -98,9 +124,8 @@ TextInput.defaultProps = {
 	variant: 'primary',
 	initialValue: '',
 	type: 'text',
-	disabled: false,
-	styles: {},
-	mergeStyles: true
+	mergeStyles: true,
+	disabled: false
 }
 
 export default TextInput;

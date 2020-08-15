@@ -1,5 +1,5 @@
 import merge from 'deepmerge';
-import defaultTheme from '../Theme/defaultTheme';
+import {defaultTheme} from '../Theme';
 
 /**
  *
@@ -7,7 +7,7 @@ import defaultTheme from '../Theme/defaultTheme';
  * @param variant
  * @return
  */
-export const styles = (theme, variant = 'primary') => {
+export const styles = (theme, variant) => {
 	const _theme = merge(defaultTheme, theme);
 	return {
 		root: {
@@ -37,7 +37,7 @@ export const styles = (theme, variant = 'primary') => {
 			'[disabled]': {
 				backgroundColor: _theme.disabled.main,
 				borderColor: _theme.disabled.dark,
-				color: _theme.disabled.light
+				color: _theme.disabled.dark
 			}
 		},
 		icon: {
@@ -51,7 +51,9 @@ export const styles = (theme, variant = 'primary') => {
 
 export function stylesValidator(styles) {
 	const validatedStyles = {};
-	if (styles.root) validatedStyles.root = styles.root;
-	if (styles.icon) validatedStyles.icon = styles.icon;
+	if (styles) {
+		if (styles.root) validatedStyles.root = styles.root;
+		if (styles.icon) validatedStyles.icon = styles.icon;
+	}
 	return validatedStyles;
 }

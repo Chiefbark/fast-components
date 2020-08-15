@@ -1,5 +1,5 @@
 import merge from 'deepmerge';
-import defaultTheme from '../Theme/defaultTheme';
+import {defaultTheme} from '../Theme';
 
 /**
  *
@@ -7,14 +7,14 @@ import defaultTheme from '../Theme/defaultTheme';
  * @param variant
  * @return
  */
-export const styles = (theme, variant = 'primary') => {
+export const styles = (theme, variant) => {
 	const _theme = merge(defaultTheme, theme);
 	return {
 		root: {
 			default: {
 				display: 'flex',
 				flexDirection: 'column',
-				alignItems: 'center',
+				alignItems: 'flex-start',
 				justifyContent: 'center',
 				backgroundColor: 'transparent',
 				outline: 'none',
@@ -22,11 +22,19 @@ export const styles = (theme, variant = 'primary') => {
 				color: 'inherit',
 				fontSize: '14pt'
 			},
-			'[data-disabled=true]': {
-				color: _theme.disabled.light
+			'>div': {
+				display: 'flex',
+				flexDirection: 'row',
+				alignItems: 'center',
+				justifyContent: 'center',
+				backgroundColor: 'transparent',
+				borderRadius: 0
 			},
 			' input:focus ~ .icon': {
 				outline: `${_theme[variant].light} auto 1px`
+			},
+			'[data-disabled=true]': {
+				color: _theme.disabled.dark
 			},
 			'[data-error=true] .helperText': {
 				color: _theme.error.main
@@ -57,27 +65,28 @@ export const styles = (theme, variant = 'primary') => {
 				borderColor: _theme.disabled.dark
 			},
 			'[data-disabled=true][data-checked=true]': {
-				backgroundColor: _theme.disabled.main,
+				backgroundColor: _theme.disabled.dark,
 				borderColor: _theme.disabled.dark
 			}
 		},
-		label: {},
 		helperText: {
 			default: {
 				alignSelf: 'flex-start',
-				color: '#ffffffa1',
+				color: _theme.muted.main,
 				fontSize: '10pt',
-				padding: '4px 0 0 8px'
+				padding: '4px 0 0 0'
 			}
-		},
+		}
 	}
 };
 
 export function stylesValidator(styles) {
 	const validatedStyles = {};
-	if (styles.root) validatedStyles.root = styles.root;
-	if (styles.icon) validatedStyles.icon = styles.icon;
-	if (styles.label) validatedStyles.label = styles.label;
-	if (styles.helperText) validatedStyles.helperText = styles.helperText;
+	if (styles) {
+		if (styles.root) validatedStyles.root = styles.root;
+		if (styles.icon) validatedStyles.icon = styles.icon;
+		if (styles.label) validatedStyles.label = styles.label;
+		if (styles.helperText) validatedStyles.helperText = styles.helperText;
+	}
 	return validatedStyles;
 }

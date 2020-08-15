@@ -1,19 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Style from 'style-it';
 import merge from 'deepmerge';
 import path from 'path';
 
 import {styles, stylesValidator} from './styles';
-import {stylesToCSS} from '../utils';
+import {getClassName, withCSS} from '../utils';
 import {ThemeConsumer} from '../Theme';
 
-function renderIcon(Icon, placement) {
+const DATA_ID = 'FC_Button';
+
+function renderIcon(Icon, {placement, className, disabled}) {
 	return (
 		typeof Icon === 'string' ?
-			<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={`icon ${placement}`}/>
+			<img src={Icon} alt={path.basename(Icon, path.extname(Icon))} className={`${className} icon ${placement}`}
+			     data-disabled={disabled}/>
 			:
-			Icon && <Icon className={`icon ${placement}`}/>
+			Icon && <Icon className={`${className} icon ${placement}`} data-disabled={disabled}/>
 	)
 }
 
@@ -23,36 +25,61 @@ function renderIcon(Icon, placement) {
  * @return {React.Component}
  */
 const Button = React.forwardRef((props, ref) => {
-	const {variant, icon: Icon, placement, styles: customStyles, mergeStyles, children, ...others} = props;
-	const _variant = ['primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'primary';
+	const {variant, icon: Icon, placement, styles: customStyles, mergeStyles, children, className, ...others} = props;
+	const _variant = ['default', 'primary', 'secondary'].indexOf(variant) >= 0 ? variant : 'default';
 
 	return <ThemeConsumer>
-		{value =>
-			Style.it(
-				stylesToCSS(mergeStyles ?
-					merge(styles(value, _variant), stylesValidator(customStyles)) :
-					customStyles ? stylesValidator(customStyles) : styles(value, _variant)),
-				<button type={'button'}
-				        className={'root'}
+		{value => {
+			const className = `${DATA_ID}-${_variant}${getClassName(value, customStyles, Button)}`;
+
+			return withCSS(mergeStyles ?
+				merge(styles(value, _variant), stylesValidator(customStyles)) :
+				customStyles ? stylesValidator(customStyles) : styles(value, _variant),
+				<button type={'button'} className={`${className} root ${className}`}
 				        style={{cursor: others.disabled ? 'default' : 'pointer'}}
 				        aria-disabled={others.disabled} ref={ref}
 				        {...others}>
-					{placement === 'left' && renderIcon(Icon, placement)}
+					{placement === 'left' && renderIcon(Icon, {
+						placement: placement,
+						className: `${className}`,
+						disabled: others.disabled
+					})}
 					<span>{children}</span>
-					{placement === 'right' && renderIcon(Icon, placement)}
-				</button>
-			)
+					{placement === 'right' && renderIcon(Icon, {
+						placement: placement,
+						className: `${className}`,
+						disabled: others.disabled
+					})}
+				</button>,
+				className)
+		}
 		}
 	</ThemeConsumer>
 });
 
+/**
+ * Used to create unique css stylesheets when the styles are overridden
+ * @type {number}
+ */
+Button.stylesID = 0;
+/**
+ * Used to create unique css stylesheets when the theme is overridden
+ * @type {number}
+ */
+Button.themeID = 0;
+/**
+ * Stores the hashes of all themes used in this Component, so there are no duplicated css stylesheets
+ * @type {string[]}
+ */
+Button.themeHashes = [];
+
 Button.propTypes = {
 	/**
-	 * Variant of the component. Can be `primary` or `secondary`
+	 * Variant of the component. Can be `default`, `primary` or `secondary`
 	 *
-	 * `string` - default `primary`
+	 * `string` - default `default`
 	 */
-	variant: PropTypes.oneOf(['primary', 'secondary']),
+	variant: PropTypes.oneOf(['default', 'primary', 'secondary']),
 	/**
 	 * Displays an icon in the button. Can be either a component or a path/url to the image
 	 *
@@ -87,11 +114,10 @@ Button.propTypes = {
 }
 
 Button.defaultProps = {
-	variant: 'primary',
-	disabled: false,
+	variant: 'default',
 	placement: 'right',
-	styles: {},
-	mergeStyles: true
+	mergeStyles: true,
+	disabled: false
 }
 
 export default Button;
